@@ -1,0 +1,45 @@
+---
+layout: post
+title: Kelly criterion
+date: '2007-10-30 04:57:00 -0400'
+mt_id: 63
+categories:
+- trading
+---
+<p>[HDB 2008-06-04] This text is lifted from some website and I can't remember where.</p>
+
+<p>For those who are interested in the theory, here are the mathematical steps I used to generalize the above problem.</p>
+
+<p>Let's define some variables:</p>
+<pre class="prettyprint">F = % of your bankroll that you invest in A
+W1 = ROI of Product 1 = 30%
+W2 = ROI of Product 2 = 10%
+W3 = ROI of Product 3 = 12%
+W4 = ROI of No Products Launching = -15%
+P1 = Probability of Product 1 Launching
+P2 = Probability of Product 2 Launching
+P3 = Probability of Product 3 Launching
+P4 = Probability of No Product Launching
+B = Initial Bankroll
+B' = Future Bankroll after N such investments
+M = The Geometric Mean of N such investments</pre>
+
+<p>Using the above infomation, we can formulate:</p>
+<pre class="prettyprint">B' = B * (1 + W1*F)^(P1*N) * 
+    (1 + W2*F)^(P2*N) * 
+    (1 + W3*F)^(P3*N) * 
+    (1 + W4*F)^(P4*N)
+
+M^N = B'/B = (1 + W1*F)^(P1*N) * 
+    (1 + W2*F)^(P2*N) * 
+    (1 + W3*F)^(P3*N) * 
+    (1 + W4*F)^(P4*N)
+M = [(1 + W1*F)^(P1*N) * 
+    (1 + W2 * F)^(P2*N) * 
+    (1 + W3*F)^(P3*N) * 
+    (1 + W4*F)^(P4*N)]^(1/N)
+M = (1 + W1*F)^(P1) * 
+    (1 + W2*F)^(P2) * 
+    (1 + W3*F)^(P3) * 
+    (1 + W4*F)^(P4)</pre>
+<p>Therefore, to maximize the geometric return M, we need to find F such that the Product Sum of (1+Wi*F)^Pi for all i is maximized. Unfortunately, there is no simple formula that can compute the Kelly Criterion for multiple possible outcomes. Fortunately, with the aid of computer, I constructed an optimization model that will find the Kelly Criterion for you.</p>

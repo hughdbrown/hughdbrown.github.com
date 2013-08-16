@@ -1,0 +1,24 @@
+---
+layout: post
+title: Marshalling results to the UI thread
+date: '2008-04-19 01:00:00 -0400'
+mt_id: 48
+categories:
+- programming
+---
+</blockquote><pre class="prettyprint">private delegate
+[ReturnType] [MethodName] Delegate([parameters]);
+private [ReturnType] MethodName
+{
+    if(this.InvokeRequired)
+    {
+        [MethodName]Delegate del = 
+                new [MethodName]Delegate([MethodName]);
+        object[] o = new object[]{[parameter values]};
+        this.Invoke(del,o);
+    }
+    else
+    {
+        [your logic here]
+    }
+}</pre></blockquote>

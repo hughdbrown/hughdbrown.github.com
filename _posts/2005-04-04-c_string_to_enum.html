@@ -1,0 +1,29 @@
+---
+layout: post
+title: C# string to enum
+date: '2005-04-04 10:12:00 -0400'
+mt_id: 874
+---
+<pre class="prettyprint">enum FieldType
+{
+  FieldString,
+  FieldInt,
+  FieldDouble,
+  FieldMDY,
+  FieldYMD
+};
+class Field
+{
+  public int fieldNumber;
+  public string fieldName;
+  public FieldType fieldType;
+  public int fieldSize;
+  public Field (int fn, string n, string t, int s)
+  {
+    fieldNumber = fn;
+    fieldName = n;
+    fieldType = (CSVParse.FieldType) Enum.Parse (
+                typeof(CSVParse.FieldType), t);
+    fieldSize = s;
+  }
+}</pre>

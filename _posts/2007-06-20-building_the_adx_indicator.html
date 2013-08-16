@@ -1,0 +1,43 @@
+---
+layout: post
+title: BUILDING THE ADX INDICATOR
+date: '2007-06-20 11:52:00 -0400'
+mt_id: 139
+categories:
+- trading
+---
+<p>[<a href="http://www.hal-pc.org/~tradesig/presentations/2005-01.pdf">BUILDING THE ADX INDICATOR</a>]</p>
+
+<p>To calculate the Directional Movement System:<p>
+<ol>
+<li>Calculate the Directional movement for today<br />
+<pre class="prettyprint">
++DM = Today's High - Yesterday's High (when price moves upward)
+-DM = Yesterday's Low - Today's Low (when price moves downward)</pre>
+<p>You cannot have both +DM and -DM on the same day. If there is an outside day (where both calculations are
+positive) then the larger of the two results is taken. An inside day (where both calculations are negative) will
+always equal zero.</p></li>
+<li>Calculate the true range for the day. True range is the largest of:<br />
+<pre class="prettyprint">
+Today's High - Today's Low,
+Today's High - Yesterday's Close, and
+Yesterday's Close - Today's Low</pre>
+<pre class="prettyprint">
++DM14 = exponential moving average* of +DM
+-DM14= exponential moving average* of -DM
+TR14 = exponential moving average* of True Range</pre></li>
+<li>Calculate the Directional Indicators:<br />
+<pre class="prettyprint">
++DI14 = +DM14 divided by TR14
+-DI14 = -DM14 divided by TR14</pre></li>
+<li>Calculate the components of the Average Directional Movement Index (ADX):<br />
+<ol>
+<li>Calculate the DI Difference:<br />
+Record the difference between +DI14 and -DI14 as a positive number.</li>
+<li>Calculate the Directional Index (DX):<br />
+<pre class="prettyprint">
+DX = DI Difference divided by the sum of +DI14 and -DI14
+ADX = the exponential moving average* of DX</pre></li>
+</li>
+</ol>
+</ol>

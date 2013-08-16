@@ -1,0 +1,61 @@
+---
+layout: post
+title: Writing Scalable AJAX Web Applications
+date: '2006-02-11 09:17:00 -0500'
+mt_id: 399
+---
+<pre class="prettyprint">
+&lt;%@ WebHandler Language="C#" Class="DataHandler" %&gt;
+using System;
+using System.Web;
+using System.Xml;
+using System.Text;
+
+public class DataHandler : IHttpHandler
+{
+  public void ProcessRequest (HttpContext context)
+  {
+    context.Response.ContentType = "text/xml";
+    XmlDocument doc = this.GetFileList(context);
+    XmlTextWriter writer = new XmlTextWriter(
+      context.Response.OutputStream,
+      Encoding.UTF8);
+    string requestedNodePath = 
+      HttpUtility.UrlDecode(context.Request.Params["nodePath"]);
+
+    if (requestedNodePath != null &amp;&amp; requestedNode.Length &gt; 0)
+    {
+        XmlNode node = doc.SelectSingleNode(requestedNode);
+        if (node != null)
+         node.WriteTo(writer);
+    }
+
+    writer.Flush();
+    writer.Close();
+    writer=null;
+
+    context.Response.Flush();
+    context.Response.Close();
+    context.Response.End();
+
+    doc = null;
+  }
+
+  private XmlDocument GetFileList(HttpContext context)
+  {
+    XmlDocument fileList = context.Cache.Get("filelist") 
+      as XmlDocument;
+    if (fileList == null)
+    {
+      fileList = new XmlDocument();
+      fileList.Load(context.Server.MapPath("filelist.xml"));
+      context.Cache.Add("filelist", fileList, null,
+        Caching.Cache.NoAbsoluteExpiration,
+        new TimeSpan(0, 30, 0),
+        Caching.CacheItemPriority.Normal, null);
+
+    }
+    return fileList;
+  }
+  public bool IsReusable { get { return false; } }
+}</pre>

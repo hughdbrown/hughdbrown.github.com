@@ -1,0 +1,35 @@
+---
+layout: post
+title: Github subtree merge
+date: '2009-12-03 09:44:57 -0500'
+mt_id: 1569
+---
+<p>I had a GIT problem on GitHub. I had projects in a directory hierarchy like this:</p>
+<pre><blockquote class="prettyprint">    root/src/lang1/project1
+    root/src/lang1/project2
+    root/src/lang1/project3
+    ...</blockquote></pre>
+<p>that were in Git locally. Each was a separate Git repository. I then tried to (1) move the source to GitHub and (2) add other projects that were at the same level or higher:</p>
+<pre><blockquote class="prettyprint">    root/src/lang2/project-x
+    root/src/lang3/project-y
+    root/release/...
+    root/docs/...
+    ...</blockquote></pre>
+<p>And Git took my intentions the wrong way. Instead of a single hierarchical repository from root/ down, I then had all of the stuff in root/ down except the lang1/ directories were all islands which GitHub thought of as submodules. Except not quite. These projects did not display with subfolders -- they displayed with the submodule icon, but I couldn't get the source from GitHub via them.</p>
+
+<p>The fix was quite easy once I'd contacted tech support at github and exchanged email with Tekkub. He recommended this <a href="http://help.github.com/subtree-merge/">URL</a> for a description of how to merge a subtree. I ended up with a script like this:</p>
+<pre><blockquote class="prettyprint"># Put repository at
+#    ../temp/DazUtility/DazUtilitySetup
+# into subtree at
+#     vb.net/DazUtility/DazUtilitySetup
+git remote add -f A ../temp/DazUtility/DazUtilitySetup
+git merge -s ours --no-commit A/master
+git read-tree --prefix=vb.net/DazUtility/DazUtilitySetup A/master
+git commit -m "Merge with DazUtilitySetup"
+git push
+git remote rm A</blockquote></pre>
+
+<p>Using the <em>ours</em> strategy for the merge did not work with all my projects and I ended up using <em>resolve</em> in one case:</p>
+<pre><blockquote class="prettyprint">git merge -s resolve --no-commit A/master</blockquote></pre>
+
+<p>One final word: tech support at Github is awesome: fast and knowledgeable with great follow-up.</p>

@@ -1,0 +1,22 @@
+---
+layout: post
+title: ! 'PathCompactPathEx: API for shortening paths'
+date: '2007-04-09 16:29:08 -0400'
+mt_id: 1388
+categories:
+- programming
+---
+<h1>PathCompactPathEx()</h1>
+<pre class="prettyprint">
+[DllImport("shlwapi.dll", CharSet = CharSet.Auto)]
+static extern bool PathCompactPathEx(
+    [Out] StringBuilder pszOut, 
+    string szPath, int cchMax,
+    int dwFlags);
+
+static string PathShortener(string path, int length)
+{
+    StringBuilder sb = new StringBuilder();
+    PathCompactPathEx(sb, path, length, 0);
+    return sb.ToString();
+}</pre>

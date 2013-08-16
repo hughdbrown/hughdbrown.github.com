@@ -1,0 +1,13 @@
+---
+layout: post
+title: Python code to find duplicate texts on google
+date: '2009-04-14 15:30:04 -0400'
+mt_id: 1545
+categories:
+- programming
+---
+<p>I came across an accusation of plagiarism on the web today and thought it would be interesting to code up some python that finds candidate texts that are plagiarisms of the reference text. The obvious idea: query google for matches.</p>
+
+<p>So the first thing was to find the unusual words that would form the google signature. I tracked down a list of <a href="http://en.wiktionary.org/wiki/Wiktionary:Frequency_lists">English word frequencies</a> and saved it to disk. Then I wrote code to load the reference text into memory and to count occurrences of each word. Then the top-scoring words are the ones that occur much more frequently than expected in the word frequency list.</p>
+
+<p>Downloads: <a href="/files/plagiarism.py">plagiarism.py</a> &bull; <a href="/files/wordfreq.txt">word frequency file</a></p>

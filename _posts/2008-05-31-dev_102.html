@@ -1,0 +1,66 @@
+---
+layout: post
+title: Dev 102
+date: '2008-05-31 13:19:44 -0400'
+mt_id: 1150
+categories:
+- website
+---
+<p>I came across <a href="http://www.dev102.com/">this website</a> the other day. It has a fair amount of interesting programming information, mostly about C# and .NET development.<p>
+
+<p>There are a couple of links on Firefox plugins ([<a href="http://www.dev102.com/2008/05/29/5-more-firefox-plugins-any-web-developer-needs/">Five more FireFox plugins...</a>], [<a href="http://www.dev102.com/2008/03/30/5-firefox-extensions-any-web-developer-must-have/">Five FireFox plugins...</a>]) that I liked:</p>
+<ol>
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/748">GreaseMonkey</a>]<br />
+Allows you to customize the way a webpage displays using small bits of JavaScript.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/271">ColorZilla</a>]<br />
+Advanced Eyedropper, ColorPicker, Page Zoomer and other colorful goodies</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/2691">Poster</a>]<br />
+A developer tool for interacting with web services and other web resources that lets you make HTTP requests, set the entity body, and content type. This allows you to interact with web services and inspect the results.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/216">JavaScript Debugger</a>]<br />
+Venkman is the code name for Mozilla's JavaScript Debugger. Venkman aims to provide a powerful JavaScript debugging environment for Mozilla based browsers.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/1802">X-Ray</a>]<br />
+See the tags on a page without viewing the sourcecode.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/4187">CSSMate</a>]<br />
+Inline CSS Editing Evolved.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/5648">FireShot</a>]<br />
+FireShot is a Firefox extension that creates screenshots of web pages. Unlike other extensions, this plugin provides a set of editing and annotation tools, which let users quickly modify captures and insert text and graphical annotations.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/60">Web Developer</a>]<br />
+Adds a menu and a toolbar with various web developer tools.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/394">ViewSourceWith</a>]<br />
+Open page source, CSS and JS files, modify content, view server side pages, etc.</p></li>
+
+<li><p>[<a href="https://addons.mozilla.org/en-US/firefox/addon/1843">FireBug</a>]<br />
+Firebug integrates with Firefox to put a wealth of development tools at your fingertips while you browse. You can edit, debug, and monitor CSS, HTML, and JavaScript live in any web page.</p></li>
+</ol>
+
+<p>I can't admit to having used them all, partly because I upgraded to FireFox 3.0 this week and very few of these plugins are compatible -- only FireShot and ViewSourceWIth are. I am most excited to add FireShot and FireBug. I'll have to wait for the FF 3.0 version of the latter.</p>
+
+<p>[2008-06-15: <a href="https://addons.mozilla.org/en-US/firefox/addon/1843">Firebug for Firefox 3.0</a> has finally been released.]</p>
+
+<p>I also really liked a couple of other short articles:</p>
+<ul>
+<li><a href="http://www.dev102.com/2008/04/08/4-key-differences-between-implicit-and-explicit-interface-implementation/">Implicit and explicit interface implementation</a></li>
+
+<li><a href="http://www.dev102.com/2008/03/16/a-net-memory-leak-you-did-not-think-about/">.NET memory leak</a><br />
+To sum things up, the safest way to ensure that an object will be collected by the GC is to make it inherit IDisposable and in the Dispose method unsubscribe from all the events you were subscribed to.</li>
+
+<li><a href="http://www.dev102.com/2008/04/10/how-to-expose-your-collections-safely/">How to expose your collections safely</a><br /><br />
+<pre class="prettyprint">class TreeNode
+{
+  private List&lt;TreeNode&gt; children = new List&lt;TreeNode&gt;();
+
+  public IList&lt;TreeNode&gt; Children
+  {
+    get { return children.AsReadOnly(); }
+  }
+}</pre>
+</li>
+</ul>

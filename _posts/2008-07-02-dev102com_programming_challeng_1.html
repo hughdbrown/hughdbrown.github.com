@@ -1,0 +1,38 @@
+---
+layout: post
+title: ! 'Dev102.com programming challenge #10'
+date: '2008-07-02 17:59:18 -0400'
+mt_id: 1217
+categories:
+- programming
+---
+<p><a href="http://www.dev102.com/net/a-programming-job-interview-challenge-10/">Programming challenge #10</a> has been posted at dev102.com.</p>
+
+<p>If all the numbers 1..n were present, then they would sum to <b>n(n+1)/2</b>.
+If some x is absent, then they will sum to <b>n(n+1)/2 - x</b>. So to determine which number is missing, subtract the sum of the series from the expected sum.</p>
+
+<p>This python code finds the missing number in the series named values:</p>
+
+<pre class="prettyprint lang-py">def test(values) :
+	max_val = len(values) + 1
+	expected_sum = max_val*(max_val + 1) / 2
+	return expected_sum - sum(values)</pre>
+
+<p>Here is a complete test:</p>
+
+<pre class="prettyprint lang-py">import random
+def test(values) :
+	max_val = len(values) + 1
+	expected_sum = max_val*(max_val + 1) / 2
+	return expected_sum - sum(values)
+
+test_range = 200
+for i in range(1,test_range) :
+	a = range(1, i) + range(i+1, test_range+1)
+	random.shuffle(a)
+	x = test(a)
+	if x != i :
+		print "Failed at ", i
+		print a
+		print sum(a)
+		break</pre>

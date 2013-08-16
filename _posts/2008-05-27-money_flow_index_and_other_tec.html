@@ -1,0 +1,68 @@
+---
+layout: post
+title: Money Flow Index and other technical indicators
+date: '2008-05-27 21:21:09 -0400'
+mt_id: 1132
+categories:
+- trading
+- programming
+---
+<p>The descriptions of technical analysis algorithms are a bit annoying. They are written to calculate a single point, assuming a programming model that is non-vectorized. I really don't get why the algorithms are so poorly described.</p>
+
+<p>Take <a href="http://www.fmlabs.com/reference/default.htm?url=MoneyFlowIndex.htm">this description</a> of Money Flow Index as an example.</p>
+<blockquote class="quote">
+<img src="/images/MoneyFlowIndex.gif" />
+</blockquote>
+
+<p>First off, this:</p>
+<pre class="prettyprint lang-py">MoneyFlowIndex = 100 - (100 / (1 + MoneyRatio))</pre>
+<p>is the same as this:</p>
+<pre class="prettyprint lang-py">MoneyFlowIndex = 100 * PositiveMoneyFlow /  (PositiveMoneyFlow + NegativeMoneyFlow)</pre>
+<p>or even:</p>
+<pre class="prettyprint lang-py">MoneyFlowIndex = 100 * PositiveMoneyFlow / TotalMoneyFlow</pre>
+<p>Now we have a formula which works even when NegativeMoneyFlow is zero.</p>
+
+<p>We have just two concepts, PositiveMoneyFlow and TotalMoneyFlow:</p>
+<pre class="prettyprint lang-py">pmf = sum(mfi for mfi, reti in zip(mf, returns) if reti > 0)
+tmf = sum(mf)
+MoneyFlowIndex = pmf / tmf</pre>
+<p>where:</p>
+<pre class="prettyprint">typ = [ (p.high + p.low + p.close) / 3 for p in prices ]
+vol = [ p.volume for p in prices ]
+returns = [ (typ[i] - typ[i-1]) / typ[i-1] 
+    for i in range(1, len(typ)) ]
+</pre>
+
+<p>Okay, we turned a price series into typical prices, created daily returns and money flows from the typical prices, produced the positive money flow and total money flow, and finally got the money flow index. What did it buy us to do it with series like this?</p>
+
+<p>Lots. The original algorithm totally glosses over the fact that we don't want a single money flow index -- we want a time series of money flow indexes. All of the basic series are viewed through a <em>window</em>, and windowing like this makes the basic algorithm really inefficient. The Positive Money Flow for the range 0..n differs in only two places from the range 1..n+1 (pmf[0] drops and pmf[n+1] is added) but a naive implementation will sum the series as if there were no overlap. To do this properly, we need series that have partial sums.</p>
+
+<p>If you want to add up the m-sized windows on data of size n, you can optimize by creating a series that is the running total of the data seen so far and subtracting element[x] from element[x+m] to get the x'th window. You will iterate from 0 to n-m inclusive, giving you n-m+1 windows of size m. Here is how you make your running total:</p>
+
+<pre class="prettyprint lang-py">def runningTotal(series) :
+    result, s = [0], 0
+    for ss in series :
+        s += ss
+        result.append(s)
+    return result
+</pre>
+
+<p>Then we can write a summedSeries() function:</p>
+
+<pre class="prettyprint lang-py">def summedSeries (series, length) :
+    s = runningTotal(series)
+    for i in xrange(len(s) - length) :
+        yield s[i + length] - s[i]
+</pre>
+
+<p>and rewrite the Money Flow Index function like this:</p>
+
+<pre class="prettyprint lang-py">pmf = ((mfi if reti > 0 else 0) 
+    for mfi, reti in zip(mf, returns) )
+return [ 100.0 * pos/tot for pos, tot in 
+    zip(summedSeries(pmf, n), summedSeries(mf, n)) ]
+</pre>
+
+<p>Now we have an optimized function that works on price and volume time series and returns a Money Flow Index time series. And once you get your head around python, it even feels right.</p>
+
+<p>[ <a href="/files/mfi.py.txt">mfi.py</a> ] [ <a href="/files/msft.csv">msft.csv</a> ]</p>

@@ -1,0 +1,19 @@
+---
+layout: post
+title: Flush memory cache
+date: '2004-03-25 01:49:00 -0500'
+mt_id: 1041
+---
+<p>C++ code to do some sort of low-level memory operation in Windows.</p>
+
+<pre class="prettyprint">{
+  MEMORYSTATUS stat = {0};
+  GlobalMemoryStatus (&amp;stat);
+  VOID* mem = VirtualAlloc (0,stat.dwAvailPhys,
+    MEM_COMMIT,
+    PAGE_READWRITE);
+
+  // req to really alloc the pages
+  memset (mem,0,stat.dwAvailPhys);
+  VirtualFree (mem,0,MEM_RELEASE);
+}</pre>

@@ -1,0 +1,28 @@
+---
+layout: post
+title: Word Aligned
+date: '2008-05-03 18:13:34 -0400'
+mt_id: 5
+categories:
+- website
+---
+<p>This is a recent favorite weblog. I first found it when I was looking up the <a href="http://wordaligned.org/articles/the-maximum-subsequence-problem">maximum subsequence problem</a> -- how to find the longest positive run from a series of positive and negative numbers. It's the sort of thing you'd be interested in if you were checking portfolio returns.</p>
+
+<p>I learn a lot every time I go to this site, particularly about coding in python. I really liked recent entries on itertools.groupby():</p>
+
+<pre class="prettyprint">import itertools
+import operator
+
+city_list = [('Decatur', 'AL'), ('Huntsville', 'AL'), ('Selma', 'AL'), ('Anchorage', 'AK'), ('Nome', 'AK'),
+ ('Flagstaff', 'AZ'), ('Phoenix', 'AZ'), ('Tucson', 'AZ')]
+
+a = itertools.groupby(city_list, operator.itemgetter(1))
+
+print [ (state, ",".join(i[0] for i in it)) for s ]</pre>
+
+<p>Some favorite articles:</p>
+<ul>
+<li><a href="http://wordaligned.org/articles/top-ten-tags">Find top-x items in unsorted array</a></li>
+<li><a href="http://wordaligned.org/articles/echo">Python code to trace function execution (with arguments)</a></li>
+<li><a href="http://wordaligned.org/articles/the-maximum-subsequence-problem">Find maximum subsequence</a></li>
+</ul>

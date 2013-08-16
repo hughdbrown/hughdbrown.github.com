@@ -1,0 +1,34 @@
+---
+layout: post
+title: Dev 102 bit twiddling challenge
+date: '2008-06-05 14:38:25 -0400'
+mt_id: 1169
+---
+<p>Recently Dev102 had a <a href="http://www.dev102.com/2008/05/05/a-programming-job-interview-challenge-2/">bit twiddling programming challenge</a>.</p>
+
+<blockquote class="quote"><p>Given a 1000X1000 grayscale image where each pixel is 8 bits, you need to reverse the order of the bits in each pixel. Example: 10001101 becomes 10110001, 00111101 becomes 10111100 and so on. Provide the most efficient solution in the manner of performance because another input is that you need to handle many images per second.</p></blockquote>
+
+<p>The challenge amounts to providing code that transforms every byte in a bitmap so that its bits were reversed -- bits 1 and 8 exchange, bits 2 and 7 exchange, bits 3 and 6 exchange, and bits 4 and 5 exchange. The obvious answer is to create a lookup table because an individual byte will always map onto a particular reversed byte. You may as well do the calculation only once and then just use the byte value as a lookup into the table of reversed bytes.</p>
+
+<p>So that part is obvious and not very interesting. How to reverse the bits though?</p>
+
+<p>There are <a href="http://www.dev102.com/2008/05/12/a-programming-job-interview-challenge-3/">lots of good answers</a> (and I really like <a href="http://igoro.com/archive/programming-job-interview-challenge/">this one</a>) but none uses my approach. I took each pair of bits to be exchanged and observed that there can be four possible outcomes: 00, 01, 10, and 11. If they come out 00 or 11, you don't have to do anything: they are already reversed. If they are 01 or 10, then you need to map them to 10 or 01, respectively. And you can get that by XOR-ing the result with the mask that produced the two bit combination. That is:</p>
+<ol>
+	<li>AND the byte with an appropriate mask</li>
+	<li>if the result has one bit set of the two,</li>
+	<li>XOR the masked result with the mask.</li>
+</ol>
+<p>And the code looks like this:</p>
+<pre class="prettyprint lang-py">def reflected(x) :
+    result = 0
+    masks = (0x81, 0x42, 0x24, 0x18)
+    outcomes = ((0x80, 0x01), (0x40, 0x02), 
+        (0x20, 0x04), (0x10, 0x08))
+    for mask, outcome in zip(masks, outcomes) :
+        y = x & mask
+        if y in outcome :
+            y ^= mask
+        result |= y
+    return result</pre>
+
+<p>[<a href="/files/bit_twiddling.py.txt">Python source</a>]</p>

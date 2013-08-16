@@ -1,0 +1,26 @@
+---
+layout: post
+title: Reduce's greatest hits
+date: '2008-04-08 11:53:00 -0400'
+mt_id: 40
+categories:
+- python
+---
+<p>Reduce's greatest hits</p>
+<pre class="prettyprint">def unite(sets):
+    return reduce(set.union, sets, set())
+
+def intersect(sets):
+    return reduce(set.intersection, sets) if sets else set()
+
+def bits_to_integer(bits):
+    return reduce(lambda acc, bit: acc << 1 | bit, bits, 0)
+
+def concatenate(items, initial):
+    from operator import concat
+    return reduce(concat, items, initial)
+
+def product(items):
+    from operator import mul
+    return reduce(mul, items, 1)
+</pre>

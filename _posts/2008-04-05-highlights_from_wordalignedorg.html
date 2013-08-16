@@ -1,0 +1,25 @@
+---
+layout: post
+title: Highlights from wordaligned.org
+date: '2008-04-05 07:45:00 -0400'
+mt_id: 32
+categories:
+- python
+---
+[<a href="http://wordaligned.org/articles/echo">Echo</a>]
+<pre class="prettyprint">def echo(fn):
+    "Returns a traced version of the input function."
+    from itertools import chain
+    def wrapped(*v, **k):
+        name = fn.__name__
+        print "%s(%s)" % (
+            name, ", ".join(map(repr, chain(v, k.values()))))
+        return fn(*v, **k)
+    return wrapped
+</pre>
+
+[<a href="http://labs.google.com/papers/mapreduce.html">MapReduce: Simplified Data Processing on Large Clusters</a>]<br />
+
+[<a href="http://python.net/~goodger/projects/pycon/2007/idiomatic/">Idiomatic python</a>]<br />
+
+[<a href="http://docs.python.org/dev/howto/functional.html">Functional programming in python</a>]

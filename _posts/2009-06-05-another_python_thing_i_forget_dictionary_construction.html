@@ -1,0 +1,27 @@
+---
+layout: post
+title: ! 'Another python thing I forget: dictionary construction'
+date: '2009-06-05 11:34:17 -0400'
+mt_id: 1549
+categories:
+- python
+---
+<p>I am always forgetting how to do dictionary construction. Here is a piece of code I restructured for a friend. Notice that the dictionary is created from a sequence of tuples. (Slightly modified from the original for better pretty-printing.)</p>
+
+<pre class="prettyprint">
+def slug_to_lower(fn):
+    """
+    Decorator to lowercase string arguments to a function.
+    """
+    import string
+    def is_string(x):
+        return isinstance(x, str) or isinstance(x, unicode)
+    def trans(x):
+        return (x if not is_string(x) else string.lower(x))
+    def wrapped(*args, **kwargs):
+        neo_args = [trans(x) for x in args]
+        tuple_list = [(k,trans(v)) for k,v in kwargs.items()]
+        neo_kwargs = dict(tuple_list)
+        return fn(*neo_args, **neo_kwargs)
+    return wrapped
+</pre>

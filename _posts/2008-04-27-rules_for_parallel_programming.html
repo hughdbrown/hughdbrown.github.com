@@ -1,0 +1,88 @@
+---
+layout: post
+title: Rules for Parallel Programming for Multicore
+date: '2008-04-27 11:22:00 -0400'
+mt_id: 19
+categories:
+- programming
+---
+<a href="http://www.ddj.com/hpc-high-performance-computing/201804248">James Reinders on parallel programming</a><br /><br />
+<p>Programming for multicore processors poses new challenges. Here are
+eight rules for multicore programming to help you be successful:</p>
+<ol>
+<li>Think parallel. Approach all problems looking for the
+parallelism. Understand where parallelism is, and organize your
+thinking to express it. Decide on the best parallel approach before
+other design or implementation decisions. Learn to "Think Parallel."</li>
+<li>Program using abstraction. Focus on writing code to express parallelism, but
+avoid writing code to manage threads or processor cores. Libraries,
+OpenMP, and Intel Threading Building Blocks are all examples of using
+abstractions. Do not use raw native threads (pthreads, Windows threads,
+Boost threads, and the like). Threads and MPI are the assembly
+languages for parallelism. They offer maximum flexibility, but require
+too much time to write, debug, and maintain. Your programming should be
+at a high-enough level that your code is about your problem, not about
+thread or core management.</li>
+<li>Program in tasks (chores), not threads (cores). Leave the mapping of tasks to threads or processor cores as a distinctly separate operation in your program, preferably an abstraction you are using that handles thread/core management for you.
+Create an abundance of tasks in your program, or a task that can be
+spread across processor cores automatically (such as an OpenMP loop).
+By creating tasks, you are free to create as many as you can without
+worrying about oversubscription.</li>
+<li>Design with the option to
+turn concurrency off. To make debugging simpler, create programs that
+can run without concurrency. This way, when debugging, you can run
+programs first with--then without--concurrency, and see if both runs fail
+or not. Debugging common issues is simpler when the program is not
+running concurrently because it is more familiar and better supported
+by today's tools. Knowing that something fails only when run
+concurrently hints at the type of bug you are tracking down. If you
+ignore this rule and can't force your program to run in only one
+thread, you'll spend too much time debugging. Since you want to have
+the capability to run in a single thread specifically for debugging, it
+doesn't need to be efficient. You just need to avoid creating parallel
+programs that require concurrency to work correctly, such as many
+producer-consumer models. MPI programs often violate this rule, which
+is part of the reason MPI programs can be problematic to implement and
+debug.</li>
+<li>Avoid using locks. Simply say "no" to locks. Locks
+slow programs, reduce their scalability, and are the source of bugs in
+parallel programs. Make implicit synchronization the solution for your
+program. When you still need explicit synchronization, use atomic
+operations. Use locks only as a last resort. Work hard to design the
+need for locks completely out of your program.</li>
+<li>Use tools
+and libraries designed to help with concurrency. Don't "tough it out"
+with old tools. Be critical of tool support with regards to how it
+presents and interacts with parallelism. Most tools are not yet ready
+for parallelism. Look for threadsafe libraries--ideally ones that are
+designed to utilize parallelism themselves.</li>
+<li>Use scalable
+memory allocators. Threaded programs need to use scalable memory
+allocators. Period. There are a number of solutions and I'd guess that
+all of them are better than <i>malloc().</i> Using scalable memory
+allocators speeds up applications by eliminating global bottlenecks,
+reusing memory within threads to better utilize caches, and
+partitioning properly to avoid cache line sharing.</li>
+<li>Design
+to scale through increased workloads. The amount of work your program
+needs to handle increases over time. Plan for that. Designed with
+scaling in mind, your program will handle more work as the number of
+processor cores increase. Every year, we ask our computers to do more
+and more. Your designs should favor using increases in parallelism to
+give you advantages in handling bigger workloads in the future.</li>
+</ol>
+
+<p>I wrote these rules with explicit mention of threading everywhere. Only
+rule #7 is specifically related to threading. Threading is not the only
+way to get value out of multicore. Running multiple programs or
+multiple processes is often used, especially in server applications.</p>
+
+<p>These rules will work well for you to get the most out of multicore.
+Some will grow in importance over the next 10 years, as the number of
+processor cores rises and we see an increase in the diversity of the
+cores themselves. The coming of heterogeneous processors and NUMA, for
+instance, makes rule #3 more and more important.</p>
+
+<p>You should understand all eight and take all eight to heart. I look
+forward to any comments you may have about these rules or parallelism
+in general.</p>

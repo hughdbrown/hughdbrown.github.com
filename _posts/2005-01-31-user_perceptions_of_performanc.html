@@ -1,0 +1,22 @@
+---
+layout: post
+title: User perceptions of performance
+date: '2005-01-31 12:59:00 -0500'
+mt_id: 917
+---
+<p><a href="http://discuss.develop.com/archives/wa.exe?A2=ind0301A&amp;L=DOTNET-CLR&amp;P=R2 3391&amp;I=-3">User perceptions of performance</a></p>
+<p>You also should remember that users' perceptions of performance are not granular. Instead there are thresholds. I usually divide them into:</p>
+<ol>
+<li>blink of an eye<br />
+too quick to notice, no network operations make it here</li>
+<li>short attention span<br />
+for most people this is about 10 seconds, you throw up an hourglass and they will stay in your app and wait),</li>
+<li>email checking time<br />
+longer than 10 seconds and less than 90 seconds, most people will alt-tab out to another app</li>
+<li>coffee time<br />
+90 seconds to a few minutes, people may walk away to get a cup of coffee, etc.</li>
+<li>batch job<br />
+nobody will wait on these willingly</li>
+</ol>
+
+<p>If you can't move an operation from one category to the next, you really haven't made a noticeable improvement. As an example, if most of your webservice calls take 80 seconds and most remoting calls take 40 seconds, that's really not very significant. Your users will think your app stinks either way. If you can go from 16 seconds to 8 seconds on most calls, that's a huge deal.</p>

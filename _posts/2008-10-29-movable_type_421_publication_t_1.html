@@ -1,0 +1,41 @@
+---
+layout: post
+title: ! 'Movable Type 4.21: publication time comes to a standstill'
+date: '2008-10-29 18:45:58 -0400'
+mt_id: 1333
+categories:
+- movable_type
+---
+<p>I upgraded to 4.21 from 4.1 in the past day. I have tried to republish my weblog with a new style, but the republish times are horrific (1400 entries across 4 years):</p>
+<ul>
+	<li>??? seconds for <a href="/images/MovableType/Entry.png">entry</a> (ran for about 80 minutes before stalling on the completion screen)</li>
+	<li>2353 seconds for <a href="/images/MovableType/AuthorMonthly.png">author monthly</a></li>
+	<li>1335 seconds for <a href="/images/MovableType/CategoryMonthly.png">category monthly</a></li>
+	<li>843 seconds for <a href="/images/MovableType/Monthly.png">monthly</a></li>
+	<li>161 seconds for <a href="/images/MovableType/Category.png">category archives</a></li>
+	<li>73 seconds for <a href="/images/MovableType/IndexTemplates.png">index templates</a></li>
+	<li>16 seconds for <a href="/images/MovableType/Page.png">page</a></li>
+</ul>
+<p>That's 80 minutes without entries. For comparison, it used to take only 15 to 20 minutes to republish the entire site before.</p>
+
+<p>I've looked at the phpmyadmin system variables for MySQL and they are consistent with large numbers of slow queries, probably caused by table scans due to missing indexes in searches:</p>
+<ul>
+	<li>Slow_queries has crept up from 526k to 574k slow queries.</li>
+	<li>Handler_read_rnd from 4641k to 5341k</li>
+	<li>Handler_read_rnd_next from 955M to 1116M</li>
+	<li>Select_full_join from 9373 to 10k</li>
+</ul>
+
+<p>However, my weblog is hosted (on Windows under IIS6, no less) and I don't have access to any raw MySQL logs. I can't run MySQL from a command prompt. I have no way of telling which queries are causing the slow down. Also, I cannot upgrade the perl version.</p>
+
+<p>Ideas for discovering the problem:</p>
+<ul>
+	<li>instrument the perl code to record SQL queries & time to execute<br />
+...except I don't know what perl code executes the SQL queries. Plus, the code goes directly to the DBI/DBD perl module to execute SQL. It would mean patching the code in a zillion places.</li>
+	<li>add indexes to MT tables in MySQL<br />
+But indexes on which columns of which tables?</li>
+	<li>add foreign keys to MT tables in MySQL<br />
+Again: where?</li>
+</ul>
+
+<p>Anyone with an idea is welcome to leave a comment.</p>

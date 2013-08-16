@@ -1,0 +1,13 @@
+---
+layout: post
+title: Get assembly version string
+date: '2006-02-08 12:57:00 -0500'
+mt_id: 394
+---
+<pre class="prettyprint">using System.Reflection;
+
+private static string getAssemblyVersion ()
+{
+  Assembly a = Assembly.GetCallingAssembly ();
+  return a.GetName().Version.ToString();
+}</pre>

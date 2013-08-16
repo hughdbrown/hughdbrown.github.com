@@ -1,0 +1,15 @@
+---
+layout: post
+title: Repair UNIX files for use on Windows
+date: '2008-04-28 05:49:00 -0400'
+mt_id: 21
+categories:
+- python
+---
+<pre class="prettyprint">from __future__ import with_statement
+
+def fixFile(fileName) :
+   with open(fileName, "r") as f :
+      str = f.read().replace("\r\n", "\n").replace("\r", "\n")
+   with open(fileName, "w") as f :
+      f.write(str)</pre>

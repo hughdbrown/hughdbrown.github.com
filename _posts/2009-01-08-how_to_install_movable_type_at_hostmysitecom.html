@@ -1,0 +1,25 @@
+---
+layout: post
+title: How to install Movable Type on Linux
+date: '2009-01-08 11:19:44 -0500'
+mt_id: 1414
+---
+<p>These instructions assume you have a Linux account and that you are using Apache as a webserver. Admittedly, they are based on the instructions for <a href="http://www.movabletype.org/documentation/installation/detailed-instructions.html">Linux installation at Movable Type</a>. Ahem.</p>
+
+<p>Typically, you are going to have a directory structure like in <a href="http://www.hostmysite.com/support/linux/general/directorystructure/">What is the directory structure of my Linux website?</a>:</p>
+<ul>
+	<li>htdocs
+<p>The htdocs directory is your main web directory. All files placed in this directory are visible in a web browser. When building your website, you want to place your files within this directory. The server knows to look in this directory so you do not need to specify htdocs in your code. When uploading your website through FTP, you will need to change into the htdocs directory on the server.</p></li>
+	<li>cgi-bin
+<p>The cgi-bin directory is the one exception for your web files; all cgi scripts must be placed within the cgi-bin directory. Your cgi scripts will not run correctly if placed within the htdocs directory. Separating the cgi-bin and htdocs directories allows us to place proper permissions on the cgi-bin directory without impacting the performance of the htdocs directory.</p></li>
+</ul>
+
+<p>The not especially intuitive conclusion is that you have to split up your Movable Type installation: put mt-static into <em>/htdocs/</em> and everything else into <em>/cgi-bin/</em>.</p>
+
+<ul>
+	<li>ftp Movable Type installation to /mt directory.</li>
+	<li>Move /mt/mt-static to /htdocs/mt-static.</li>
+	<li>Move /mt to /cgi-bin/mt.</li>
+	<li>Open http://&lt;your domain&gt;/cgi-bin/mt/mt.cgi in browser and start MT configuration.</li>
+</ul>
+

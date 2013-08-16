@@ -1,0 +1,54 @@
+---
+layout: post
+title: Prompting for database connection
+date: '2007-04-22 11:33:00 -0400'
+mt_id: 226
+categories:
+- software
+---
+<p>Add a COM reference to:<br />
+Microsoft OLE DB Service Component 1.0 Type Library<br />
+Microsoft ActiveX Data Objects 2.7  // any 2.5 or higher version is fine</p>
+
+<p>You can then write code like:</p>
+<pre class="prettyprint">//
+// Prompt for a totally new connection string
+//
+private void button1_Click(object sender, EventArgs e)
+{
+    bool Cancelled = false;
+    string ConnectionString = string.Empty;
+
+    MSDASC.DataLinks d = new MSDASC.DataLinks();
+    d.hWnd = (int)this.Handle;
+    ADODB._Connection c = (ADODB._Connection)d.PromptNew();
+    if (c == null)
+        Cancelled = true;
+    else
+    {
+        Cancelled = false;
+        ConnectionString = c.ConnectionString;
+    }
+}
+
+//
+// Edit a connection string
+//
+private void button2_Click(object sender, EventArgs e)
+{
+    bool Saved = false;
+    string ConnectionString = "Provider=SQLOLEDB.1;Integrated
+Security=SSPI;Persist Security Info=False;User ID=sa;Initial
+Catalog=Northwind;Data Source=.";
+
+    MSDASC.DataLinks d = new MSDASC.DataLinks();
+    d.hWnd = (int)this.Handle;
+    object c = new ADODB.Connection();
+    ((ADODB._Connection)c).ConnectionString = ConnectionString;
+    Saved = d.PromptEdit(ref c);
+    if (Saved)
+    {
+        ConnectionString = ((ADODB._Connection)c).
+          ConnectionString;
+    }
+}</pre>

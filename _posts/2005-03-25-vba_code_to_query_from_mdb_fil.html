@@ -1,0 +1,32 @@
+---
+layout: post
+title: VBA code to query from MDB file
+date: '2005-03-25 02:10:00 -0500'
+mt_id: 853
+---
+<p>VBA code to query from MDB file</p>
+
+<pre class="prettyprint">Sub foo()
+  Const cString As String = _
+    "Provider=Microsoft.Jet.OLEDB.4.0;" +
+    "Data Source=g:\wwwroot\books.mdb;" +
+    "User Id=admin;Password=;"
+  Const sql As String = _
+     "SELECT p.asin, p.title, pt.description, p.text, p.imageURL " +
+     "FROM Products p, ProductType pt " + 
+     "WHERE pt.productTypeId = p.productTypeId " +
+     "ORDER BY pt.description "
+  Dim conn As ADODB.Connection
+  Set conn = New ADODB.Connection
+  Call conn.Open(connectionString:=cString)
+  Dim rs As ADODB.Recordset
+  Set rs = conn.Execute(sql)
+  While Not rs.EOF
+    Debug.Print rs.Fields("asin").Value 
+        &amp; ": " &amp; 
+        rs.Fields("title").Value
+        Call rs.MoveNext
+    Wend
+    Call rs.Close
+    Call conn.Close
+End Sub</pre>

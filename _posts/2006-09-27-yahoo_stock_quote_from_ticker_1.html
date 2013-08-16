@@ -1,0 +1,64 @@
+---
+layout: post
+title: Yahoo stock quote from ticker
+date: '2006-09-27 05:35:00 -0400'
+mt_id: 437
+categories:
+- trading
+---
+<pre class="prettyprint">using System.Net;
+using System.IO;
+public class TickerQuote
+{
+  private string ticker;
+  private DateTime effective_date;
+  public TickerQuote(string t, DateTime dt)
+  {
+    ticker = t;
+    effective_date = dt;
+  }
+  private string GetTickerAddress()
+  {
+    DateTime yesterday = effective_date.AddDays(-1);
+    return String.Format(
+      "http://ichart.finance.yahoo.com/table.csv?" +
+      "s={0}&amp;" +
+      "d={1}&amp;e={2}&amp;f={3}&amp;" +
+      "g=d&amp;a={4}&amp;b={5}&amp;c={6}" +
+      "&amp;ignore=.csv",
+      ticker,
+      effective_date.Month - 1,
+      effective_date.Day,
+      effective_date.Year,
+      yesterday.Month - 1, yesterday.Day, yesterday.Year);
+  }
+  private string GetFileContents(string fileName)
+  {
+    using (StreamReader sr = new StreamReader(fileName))
+      return sr.ReadToEnd().ToString();
+  }
+  public double Price
+  {
+    get
+    {
+      string fileName = @"C:\temp\table.csv";
+      string addr = GetTickerAddress();
+      using (WebClient req = new WebClient())
+      {
+        req.DownloadFile(addr, fileName);
+        string result = GetFileContents(fileName);
+        System.IO.File.Delete(fileName);
+        //  Get the first line
+        char[] separator1 = new char[] { '\n' };
+        string[] a = result.Split(separator1);
+        string b = a[1];
+        //  Get the last value on the line
+        char[] separator2 = new char[] { ',' };
+        string[] bb = b.Split(separator2);
+        string price = bb[bb.Length - 1];
+        //  Convert to double
+        return double.Parse(price);
+      }
+    }
+  }
+}</pre>

@@ -1,0 +1,32 @@
+---
+layout: post
+title: Call .NET component from VBScript
+date: '2006-02-09 11:38:00 -0500'
+mt_id: 396
+---
+<ol>
+<li>Create a C# class library.<br />
+Project properties, Build tab, check the "Register for COM interop" checkbox.</li>
+
+<li>Write your class.</li>
+<li>Add [ComVisible(true)] to your class declaration.</li>
+<li>Build the solution.</li>
+<li>Write a VBScript to instantiate and call the object.</li>
+</ol>
+
+<p>Here's a sample:</p>
+<pre class="prettyprint">using System;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+
+namespace TestComObject
+{
+  [ComVisible(true)]
+  public class Class1
+  {
+    public void Greet()
+    {
+      MessageBox.Show("Hello world");
+    }
+  }
+}</pre>

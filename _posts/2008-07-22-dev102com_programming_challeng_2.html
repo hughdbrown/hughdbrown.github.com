@@ -1,0 +1,36 @@
+---
+layout: post
+title: ! 'Dev102.com programming challenge #13'
+date: '2008-07-22 12:35:07 -0400'
+mt_id: 1231
+categories:
+- programming
+---
+<p>Dev102.com poses this programming challenge:</p>
+<blockquote class="quote"><p>Your input is a string which is composed from bracket characters. The allowed characters are:'(', ')', '['. ']', '{', '}', '<' and '>'. Your mission is to determine whether the brackets structure is legal or not.</p>
+
+<p>Example of a legal expression: "([](<{}>))".</p>
+
+<p>Example of an illegal expression: "({<)>}".</p>
+
+<p>Provide the most efficient, elegant and simple solution for that problem.</p></blockquote>
+
+<p>It's pretty obvious to me that you push opening brackets on the stack and pop off closing brackets, ensuring that the correct closing bracket is encountered. Like this:</p>
+
+<pre class="prettyprint lang-py">def Evaluate(str):
+  stack = []
+  pushChars, popChars = "<({[", ">)}]"
+  for c in str :
+    if c in pushChars :
+      stack.append(c)
+    elif c in popChars :
+      if not len(stack) :
+        return False
+      else :
+        stackTop = stack.pop()
+        balancingBracket = pushChars[popChars.index(c)]
+        if stackTop != balancingBracket :
+          return False
+    else :
+      return False
+  return not len(stack)</pre>

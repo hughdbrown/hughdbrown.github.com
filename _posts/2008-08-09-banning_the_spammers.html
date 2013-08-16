@@ -1,0 +1,26 @@
+---
+layout: post
+title: Banning the spammers
+date: '2008-08-09 16:33:09 -0400'
+mt_id: 1243
+categories:
+- programming
+- movable_type
+---
+<p>I am getting really tired of the trackback spam. I was looking around in my MySQL administrator and found the tables that Movable Type uses to track tentative trackbacks (mt_tbping) and banned IP addresses (mt_ipbanlist). I wrote up a little SQL to copy IP addresses from unapproved trackback locations to the banned list:</p>
+
+<pre class="prettyprint">INSERT INTO mt_ipbanlist
+(ipbanlist_blog_id, ipbanlist_ip)
+SELECT MY_BLOG_ID, tbping_ip
+FROM mt_tbping
+WHERE tbping_ip <> 'MY_HOST_IP_ADDRESS'
+AND tbping_ip NOT IN (
+	SELECT ipbanlist_ip 
+	FROM mt_ipbanlist
+	WHERE ipbanlist_blog_id = MY_BLOG_ID)</pre>
+
+<p>Of course, I'll have to check that all unapproved trackbacks are spam first, but I am hoping that the volume drops in time.</p>
+
+<br /><hr /><br />
+
+<p>2008-08-13: added <a href="/files/mt-ipbanlist.txt">my list of banned IP addresses</a>, trackback spammers one and all.</p>

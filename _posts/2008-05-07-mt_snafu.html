@@ -1,0 +1,22 @@
+---
+layout: post
+title: MT snafu
+date: '2008-05-07 15:47:39 -0400'
+mt_id: 9
+categories:
+- movable_type
+---
+<p>For the past 36 hours, my blog has allowed me to create new content and to preview it, but not to actually be able to see it generated in static HTML files. I finally discovered today that I brought this on myself when I inadvertently set Movable Type to use background publishing.</p>
+
+<img src="/images/BackgroundPublishing-90.gif" class="mt-image-center" style="margin: 0pt auto 20px; text-align: center; display: block;" />
+
+<p>See the bit where it says that a cron job is needed to do the actual publishing? So if you don't actually <b>have</b> such a cron job, you'll get the result I did: no material published.</p>
+
+<p>But I really think that, notwithstanding that I don't actually read and write Perl, I should have been able to figure this out. The leading clue was that the system log started to report that source code was missing for using TheSchwartz.pm, which even I could see was some sort of multithreaded load-balancer thingee.</p>
+
+<blockquote class="quote>>Internal callback died with: Can't locate List/Util.pm in @INC (@INC contains: [...].) at [...]\mt\extlib/TheSchwartz.pm line 13.<br />
+BEGIN failed--compilation aborted at [...]\mt\extlib/TheSchwartz.pm line 13.<br />
+Compilation failed in require at (eval 43) line 3. <br />
+...propagated at C:/Perl/lib/base.pm line 62.<br />
+BEGIN failed--compilation aborted at lib/MT/TheSchwartz.pm line 10.<br />
+Compilation failed in require at lib/MT/WeblogPublisher.pm line 2164.</blockquote>

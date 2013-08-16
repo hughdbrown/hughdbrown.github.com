@@ -1,0 +1,67 @@
+---
+layout: post
+title: Binary search coding test
+date: '2009-07-03 14:52:28 -0400'
+mt_id: 1554
+categories:
+- programming
+---
+<p>The other day, I had an interview in which I was asked to "find an integer in a sorted array or integers if it was present." This is obviously a binary search, so I coded up this (but in C/C++):</p>
+
+<pre class="prettyprint">
+def binarysearch(iter, val):
+	lo, hi = 0, len(iter)-1
+	while lo <= hi:
+		mid = lo + (hi - lo) / 2
+		if iter[mid] >= val :
+			hi = mid - 1
+		else:
+			lo = mid + 1
+	return (lo if iter[lo] == val else -1)
+</pre>
+
+<p>There are a couple of things that make this noteworthy:</p>
+<ul>
+<li>Calculation of <em>mid</em><p>
+If you calculate the midpoint of the array in the more straightforward way (<em>mid = (lo + hi) / 2</em>), then you risk integer overflow when working with fixed sized integers. </p></li>
+<li>Use of a single comparison in the loop<p>
+It seems that you should actually test for an exact match on finding the element you are searching for. This is not so. More below.</p></li>
+<li>Returning <em>iter[lo]</em> instead of <em>iter[mid]</em><p>
+It is not necessary to keep track of the last midpoint. When you fall out of the loop, either <em>iter[lo]</em> is the desired value or the value was not found in the array. If it is found, then in an array that has multiple instances of the value, <em>lo</em> is the location of the first occurrence.
+</p></li>
+</ul>
+
+<p>It was on point two that the interview went a bit astray. The interviewer wanted to see code that looked more like this:</p>
+
+<pre class="prettyprint">
+def binarysearch(iter, val):
+	lo, hi = 0, len(iter)-1
+	while lo <= hi:
+		mid = lo + (hi - lo) / 2
+		if iter[mid] == val :
+			return mid
+		elif iter[mid] > val:
+			hi = mid - 1
+		else:
+			lo = mid + 1
+	return -1
+</pre>
+
+<p>And that's all very well -- it's a correct algorithm -- but it's not as efficient. In my algorithm, there is only one comparison per loop. In the other, there is either one if there is a match or two on a failure. For comparison purposes and to make this concrete, let's imagine we have an array or 63 elements and we look for every element of the array.</p>
+
+<h3>Cost of my code</h3>
+<blockquote class="quote"><pre>
+63 nodes searched * 6 comparisons per search
+378 comparisons</pre></blockquote> 
+
+<h3>Cost of other code</h3>
+<blockquote class="quote"><pre>
+1 nodes searched * 1 comparisons = 1
+2 nodes searched * 3 comparisons = 6
+4 nodes searched * 5 comparisons = 20
+8 nodes searched * 7 comparisons = 56
+16 nodes searched * 9 comparisons = 144
+32 nodes searched * 11 comparisons = 352
+579 comparisons</pre></blockquote>
+
+<p>So contrary to the expectations of the interviewer, it is actually more efficient to search to the end of the array every time using fewer comparisons than to search less of the array with more comparisons.</p>

@@ -1,0 +1,55 @@
+---
+layout: post
+title: Maximum subsequence
+date: '2008-04-08 01:21:00 -0400'
+mt_id: 35
+categories:
+- python
+---
+<p>From <a href="http://wordaligned.org/articles/the-maximum-subsequence-problem">WordAlinged.org</a>. The simple solution:</p>
+
+<pre class="prettyprint">def maximum_subsequence(seq):
+    maxsofar, maxendinghere = 0, 0
+    for s in seq:
+        # invariant: maxendinghere and maxsofar are accurate
+        # are accurate up to s
+        maxendinghere = max(maxendinghere + s, 0)
+        maxsofar = max(maxsofar, maxendinghere)
+    return maxsofar</pre>
+
+<p>A streaming library for reuse:</p>
+
+<pre class="prettyprint">def stream_accumulate(stream):
+    total = 0
+    for s in stream:
+        total += s
+        yield total
+
+def stream_floor(stream):
+    m = 0
+    for s in stream:
+        m = min(m, s)
+        yield m
+
+def stream_diff(s, t):
+    import itertools
+    for ss, tt in itertools.izip(s, t):
+        yield ss - tt
+
+def stream_diff(s, t):
+    import itertools
+    import operator
+    return itertools.imap(operator.sub, s, t)</pre>
+
+<p>A maximum subsequence solution that uses the stream library:</p>
+
+<pre class="prettyprint">import stream
+
+def maximum_subsequence_stream(ss):
+    "Return the stream of max sum contiguous subsequences of the input iterable."
+    accu1, accu2 = itertools.tee(stream.accumulate(ss))
+    return stream.ceil(stream.diff(accu1, stream.floor(accu2, baseline=0)))
+
+def maximum_subsequence(ss):
+    "Return the max sum of a contiguous subsequence of the input iterable."
+    return stream.last(maximum_subsequence_stream(ss))</pre>

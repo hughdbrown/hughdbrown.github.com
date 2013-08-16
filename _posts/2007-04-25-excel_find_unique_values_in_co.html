@@ -1,0 +1,32 @@
+---
+layout: post
+title: ! 'Excel: Find unique values in column'
+date: '2007-04-25 06:38:00 -0400'
+mt_id: 231
+---
+<p>Excel: Find unique values in column</p>
+<pre class="prettyprint">
+Sub FindUniqueValues()
+    Call Rows("1:1").Insert(Shift:=xlDown)
+    Range("A1").Value = "Email"
+    Range("B1").Value = "Unique"
+    Call Columns("A:B").Sort(Key1:=Range("A2"), _
+        Order1:=xlAscending, Header:=xlYes, _
+        OrderCustom:=1, MatchCase:=False, _
+        Orientation:=xlTopToBottom, _
+        DataOption1:=xlSortNormal)
+        
+    Dim wks As Worksheet
+    Set wks = ThisWorkbook.ActiveSheet
+    Dim startCell As Range, endCell As Range:
+    Set startCell = Range("B2")
+    Set endCell = wks.Cells.SpecialCells(xlCellTypeLastCell)
+    startCell.FormulaR1C1 = "=RC[-1]&lt;&gt;R[1]C[-1]"
+    Dim r As Range
+    Set r = Range(startCell, endCell)
+    Call startCell.AutoFill(Destination:=r)
+    Call wks.Calculate
+    Set r = Columns("A:B")
+    Call r.AutoFilter
+    Call r.AutoFilter(Field:=2, Criteria1:="TRUE")
+End Sub</pre>

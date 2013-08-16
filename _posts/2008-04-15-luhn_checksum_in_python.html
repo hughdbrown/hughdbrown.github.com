@@ -1,0 +1,18 @@
+---
+layout: post
+title: Luhn checksum in python
+date: '2008-04-15 03:40:00 -0400'
+mt_id: 45
+categories:
+- python
+---
+<pre class="prettyprint  lang-py">
+def cardLuhnChecksumIsValid(card_number):
+    """ checks to make sure that the card passes a luhn mod-10 checksum """
+    def luhnDigit(digit, count) :
+        return  ( a[digit] if ((count &amp; 1) == oddeven) else digit )
+    a = (0,2,4,6,8,1,3,5,7,9)
+    oddeven = len(card_number) &amp; 1
+    total = sum(luhnDigit(int(x), count) for count, x in enumerate(card_number))
+    return (total % 10) == 0
+</pre>

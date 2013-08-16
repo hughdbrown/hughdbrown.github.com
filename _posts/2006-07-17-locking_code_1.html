@@ -1,0 +1,18 @@
+---
+layout: post
+title: Locking code
+date: '2006-07-17 02:34:00 -0400'
+mt_id: 546
+categories:
+- net
+---
+
+<p>Locking code</p>
+<ul>
+	<li><a href="http://www.interact-sw.co.uk/iangblog/2004/03/23/locking">Monitor.TryEnter, lock, using, and Deadlock</a></li>
+	<li><a href="http://msdn.microsoft.com/msdnmag/issues/06/06/ConcurrentAffairs/default.aspx">Jeffrey Richter has an article on why the ReaderWriterLock isn't the best option</a></li>
+	<li><a href="http://blogs.msdn.com/vancem/archive/2006/03/28/563180.aspx">Low-Lock Techniques in action: Implementing a Reader-Writer lock</a></li>
+	<li><a href="http://blogs.msdn.com/vancem/archive/2006/03/29/564854.aspx">Analysis of Reader-Writer lock</a></li>
+<li><a href="http://msdn.microsoft.com/en-us/magazine/cc163726.aspx">Concurrent Affairs: Performance-Conscious Thread Synchronization</a><br />
+Jeffrey Richter on the performance costs of various thread synchronization primitives (Thread.SpinWait, Interlocked.Increment, SwitchToThread, Thread.Sleep, and ManualResetEvent). Strangely, he did not try out Lock statement.</li>
+</ul>

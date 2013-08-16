@@ -1,0 +1,26 @@
+---
+layout: post
+title: Python anagram code
+date: '2008-04-05 07:15:00 -0400'
+mt_id: 31
+categories:
+- python
+---
+<p>More code lifted from <a href="http://wordaligned.org/">wordaligned.org</a>:</p>
+
+<pre class="prettyprint">from __future__ import with_statement
+from collections import defaultdict
+
+def word_iter(fileName) :
+    with open(fileName, "r") as f:
+        for line in f:
+            yield line.strip().lower()
+
+anag_dict = defaultdict(list)
+for word in word_iter("wordlist.txt") :
+    key = "".join(sorted(word))
+    anag_dict[key].append(word)
+
+anagrams = [(key, words) 
+  for key, words in anag_dict.iteritems() 
+  if len(words) &gt; 1]</pre>

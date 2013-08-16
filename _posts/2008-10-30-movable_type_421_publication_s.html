@@ -1,0 +1,38 @@
+---
+layout: post
+title: Movable Type 4.21 publication slow
+date: '2008-10-30 14:01:42 -0400'
+mt_id: 1334
+categories:
+- movable_type
+---
+<p>This is <a href="/images/MovableType/Complete-2008-10-30.png">not my idea of good performance</a>. This is 1400 entries. It used to take about 10-20 minutes. What's going on?</p>
+
+<br /><hr /><br />
+
+<p>Update 2008-10-30: Here is <a href="/images/MovableType/Entry-2008-10-30(2).png">just the entries</a>. Yes, 144 minutes for the 1400 entries in this weblog. That's 10 per minute. I thought Movable Type 4.21 was <a href="http://www.movabletype.org/documentation/administrator/the-top-5-things-you-can-do-to-make-movable-type-even-faster.html">supposed to be faster</a>?</p>
+
+<br /><hr /><br />
+
+<p>Update 2008-10-31: In an effort to assist my website host, webhosting4life.com,  in isolating the problem< I republished my website this afternoon. It took a really long time: <a href="/images/MovableType/Complete-2008-10-31.png">251 minutes</a>.</p>
+
+<p>I've provided a number of ideas for them to explore:
+<blockquote class="quote">
+<p>It appears that the queries are all causing table scans. I've looked at the phpmyadmin system variables for MySQL and they are consistent with large numbers of table scans due to missing keys in searches.</p>
+
+<p>If no activity was found on my database, then perhaps the MySQL activity is from another user. These MySQL settings are both database and global settings:</p>
+<ul>
+	<li>Slow_queries</li>
+	<li>Handler_read_rnd</li>
+	<li>Handler_read_rnd_next</li>
+	<li>Select_full_join</li>
+	<li>Select_range_check</li>
+</ul>
+<p>All of these values are exceptional and all suggest queries that are not properly hitting indexes, causing table scans. Again, I recommend looking at the <a href="http://dev.mysql.com/doc/refman/5.0/en/slow-query-log.html">slow queries log</a>.</p>
+</blockquote>
+
+<p>Right now, 10% of the queries to the database my website uses have taken more than <em>long_query_time</em> seconds. That seems a really high ratio.</p> 
+
+<br /><hr /><br />
+
+<p>Update 2008-10-31: Another personal best: <a href="/images/MovableType/Complete-2008-11-01.png">19 hours, 47 minutes</a>.</p>

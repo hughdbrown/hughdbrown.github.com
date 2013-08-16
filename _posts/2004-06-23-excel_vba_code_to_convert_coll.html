@@ -1,0 +1,15 @@
+---
+layout: post
+title: Excel VBA code to convert collection into an array
+date: '2004-06-23 11:31:11 -0400'
+mt_id: 1199
+---
+<p>Excel VBA code to convert collection into an array</p>
+<pre class="prettyprint">Function collectionToArray(c As Collection) As Variant()
+    Dim a() As Variant: ReDim a(0 To c.Count - 1)
+    Dim i As Integer
+    For i = 1 To c.Count
+        a(i - 1) = c.Item(i)
+    Next
+    collectionToArray = a
+End Function</pre>

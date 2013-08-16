@@ -1,0 +1,22 @@
+---
+layout: post
+title: Log4net
+date: '2007-01-30 02:15:00 -0500'
+mt_id: 250
+---
+<p>Log4net is the .NET version of log4j. In order to use it you must do the following:</p>
+<ol>
+<li>Reference log4net-net-1.1.dll</li>
+<li>In each class include the following<br />
+<ol>
+<li>using log4net;</li>
+<li><pre class="prettyprint">private static log4net.ILog s_log = 
+  LogManager.GetLogger(
+    System.Reflection.MethodBase.
+    GetCurrentMethod().DeclaringType);</li></ol></li>
+<li>Goto Project-&gt;Add New Item-&gt;Application Configuration File. This will create a file called App.Config</li>
+<li>Enter log4net config info into App.Config. Here is a sample file: SampleAppConfig</li>
+<li>In AssemblyInfo.cs add the following to the end of the file:
+<pre class="prettyprint">[assembly: log4net.Config.DOMConfigurator(Watch=true)]</pre>
+</li>
+</ol>

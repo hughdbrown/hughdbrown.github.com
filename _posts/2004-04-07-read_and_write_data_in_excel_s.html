@@ -1,0 +1,16 @@
+---
+layout: post
+title: Read and write data in Excel spreadsheets
+date: '2004-04-07 04:18:00 -0400'
+mt_id: 1058
+---
+[<a href="http://www.able-consulting.com/MDAC/ADO/Connection/OLEDB_Providers.htm#OLEDBProviderForMicrosoftJetExcel">Read and write data in Excel spreadsheets</a>]<br />
+<pre class="prettyprint">
+oConn.Open "Provider=Microsoft.Jet.OLEDB.4.0;" &amp; _
+           "Data Source=c:\somepath\mySpreadsheet.xls;" &amp; _
+           "Extended Properties=""Excel 8.0;HDR=Yes"""</pre>
+<p>Where "HDR=Yes" means that there is a header row in the cell range (or named range), so the provider will not include the first row of the selection into the recordset.  If "HDR=No", then the provider will include the first row of the cell range (or named ranged) into the recordset.</p>
+
+[<a href="http://support.microsoft.com/default.aspx?scid=kb;en-us;278973">SAMPLE: ExcelADO Demonstrates How to Use ADO to Read and Write Data in Excel Workbooks</a>]<br />
+[<a href="http://www.ngsource.com/">Source control system</a>]<br />
+[<a href="http://msdn.microsoft.com/vstudio/downloads/updates/sp/vs6/sp6/default.aspx">MS Visual Studio 6.0 Service Pack 6 released</a>]<br />

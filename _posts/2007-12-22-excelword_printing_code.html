@@ -1,0 +1,30 @@
+---
+layout: post
+title: Excel-Word printing code
+date: '2007-12-22 09:53:00 -0500'
+mt_id: 73
+---
+<p>Excel-Word printing code</p>
+<pre class="prettyprint">
+Private Sub CommandButton1_Click()
+    Dim wks As Worksheet: Set wks = ThisWorkbook.ActiveSheet
+    Dim app As New Word.Application
+    Dim doc As Word.Document: Set doc = app.Documents.Add()
+    app.Visible = True
+    Call app.Activate
+    Call app.ShowMe
+    Dim rng As Word.Range: Set rng = doc.Range(Start:=0, End:=0)
+    
+    Dim i As Long: i = 1
+    Dim CRLF As String: CRLF = Chr(13) &amp; Chr(10)
+    Dim s As String
+    s = wks.Cells(i, 1) &amp; " " &amp; wks.Cells(i, 2) &amp; CRLF
+    s = s &amp; wks.Cells(i, 3) &amp; CRLF
+    s = s &amp; wks.Cells(i, 4) &amp; ", " &amp; wks.Cells(i, 5) &amp; " " &amp; wks.Cells(i, 6) &amp; CRLF
+    rng.Text = s
+    rng.Font.Size = 36
+
+    Call doc.PrintPreview
+    Call doc.Close(SaveChanges:=False)
+    Call app.Quit(SaveChanges:=False)
+End Sub</pre>

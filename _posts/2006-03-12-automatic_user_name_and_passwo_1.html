@@ -1,0 +1,34 @@
+---
+layout: post
+title: Automatic user name and password authentication at HTML websites
+date: '2006-03-12 05:33:00 -0500'
+mt_id: 575
+---
+<p>HDB: This is lifted from some newsgroup. I can't remember where.</p>
+
+<p>It would depend on how authentication is implemented on that site.  If it
+is a custom authentication scheme you'll probably have to POST the
+username and password to a "login" page then keep track of a session
+variable to use on every subsequent Navigate.</p>
+
+<p>If it's http authentication then you could pass the username and password
+in the URI: http://username:password@host/file.htm.  Which can be done
+easily with the UriBuilder class.  But, that's slowly becoming deprecated
+for obvious reasons.</p>
+
+<p>Alternatively, with HTTP basic authentication, you just pass an added HTTP
+header entry for the username and password (encoded in base64), which can
+be done with a couple of the WebBrowser.Navigate overrides.  For example:</p>
+
+<pre class="prettyprint">
+String base64 = Convert.ToBase64String(ASCIIEncoding.
+  ASCII.GetBytes("username:password"));
+String auth = String.Format(
+  "Authorization: Basic {0}\r\n",
+  base64);
+byte[] post = ASCIIEncoding.ASCII.GetBytes(
+  auth.ToCharArray());
+String targetFrameName = "";
+byte[] postData = null;
+Uri uri = new Uri("http://www.contoso.com/");
+webBrowser1.Navigate(uri, targetFrameName, postData, auth);</pre>

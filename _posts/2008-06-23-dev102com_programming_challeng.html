@@ -1,0 +1,44 @@
+---
+layout: post
+title: ! 'Dev102.com programming challenge #9'
+date: '2008-06-23 23:29:43 -0400'
+mt_id: 1208
+categories:
+- programming
+---
+<p><a href="http://www.dev102.com/net/a-programming-job-interview-challenge-9/">Programming challenge #9</a> has been posted at dev102.com. I think that this is about the shortest solution possible.</p>
+
+<p>I initially did this recursively, but I needed two functions: one for the base case using the root and one for all other cases. Here, I just set up the preconditions in variables outside the loop and iterate over the left and right nodes. Which node is second last depends upon whether we went left or right in the last iteration: if left, then the current; if right, then the parent.</p>
+
+<pre class="prettyprint">Node secondLast(Node root)
+{
+ boolean wentRight = true;
+ Node parent = NULL, current = root;
+ while (current->left && current->right)
+ {
+  parent = current;
+  wentRight = (current->right != NULL);
+  current = wentRight ? current->right : current->left;
+ }
+ return (wentRight ? parent : current);
+}</pre>
+
+<p>I suppose I could be perverse and write the loop with a body of a single line, assigning to parent, wentRight, and current within a single ternary operator statement:</p>
+<pre class="prettyprint">
+  current = (wentRight = ((parent = current)->right != NULL)) ?
+   current->right : current->left;
+</pre>
+<p>I think that's a bit obscure just for the sake of brevity.</p>
+
+<br /><hr /><br />
+
+<p>2008-06-24: I could even drop the <i>wentRight</i> variable and use the <i>parent</i> variable to record which way we went:</p>
+<pre class="prettyprint">
+ while (current->left && current->right)
+ {
+  parent = (current->right != NULL) ? current : NULL;
+  current = (parent == NULL) ? current->right : current->left;
+ }
+ return (parent != NULL) ? parent : current;
+</pre>
+<p>Now we're down to a loop with just two variables. I don't think I can make the code shorter and simpler than that.</p>

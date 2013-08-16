@@ -1,0 +1,10 @@
+---
+layout: post
+title: Debugging MSI installation
+date: '2005-04-29 04:22:00 -0400'
+mt_id: 798
+---
+<p>There is a way to launch an msi with logging turned on:</p>
+<pre class="prettyprint">msiexec /l* logfile.txt /i MyMsi.msi</pre>
+
+<p>Then examine the log file. Note at the end of the log file it shows a dump of MSI properties.</p>

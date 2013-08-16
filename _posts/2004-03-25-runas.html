@@ -1,0 +1,14 @@
+---
+layout: post
+title: RunAs
+date: '2004-03-25 01:49:00 -0500'
+mt_id: 1037
+---
+<p>RunAs</p>
+<pre class="prettyprint">
+set WshShell = CreateObject("WScript.Shell")
+WshShell.Run "runas /user:Serdar ""e:test.bat"""
+WScript.Sleep 100
+WshShell.Sendkeys "password~"</pre>
+
+<p><a href="http://webcpp.sourceforge.net">C# to HTML</a></p>

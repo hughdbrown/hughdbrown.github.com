@@ -1,0 +1,20 @@
+---
+layout: post
+title: The things I don't know about python
+date: '2009-06-05 11:29:20 -0400'
+mt_id: 1548
+categories:
+- python
+---
+<p>Sometimes, I amaze myself with what I don't know. Here is a simple case: in python, you can pass a function a dictionary with keys with the same name as the function's arguments. For some reason, I thought this was only available when you identified keyword arguments.</p>
+
+<pre class="prettyprint">
+>>> def foo(a, b) :
+...     return a + b
+...
+>>> foo(2, 5)
+7
+>>> d = {'a':2, 'b':5}
+>>> foo(**d)
+7
+</pre>

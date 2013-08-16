@@ -1,0 +1,18 @@
+---
+layout: post
+title: Kicking users off SQL databases
+date: '2005-02-25 12:30:00 -0500'
+mt_id: 934
+---
+<p>[<a href="http://www.dotnetdevs.com/categories/advice.aspx">.NET development advice</a>]</p>
+
+<p>[<a href="http://www.sqlteam.com/forums/topic.asp?TOPIC_ID=40077">Kicking users off SQL databases</a>]</p>
+<pre class="prettyprint">alter database DB_NAME set single_user with rollback immediate</pre>
+
+<p>Parsing dates from strings using one of several formats</p>
+<pre class="prettyprint">
+static DateTime ParseDateTime(string s)
+{
+  string[] formats = { "MM/dd/yy", "MM/dd/yyyy" };
+  return dt = DateTime.ParseExact(s, formats, CultureInfo.InvariantCulture, DateTimeStyles.None);
+}</pre>

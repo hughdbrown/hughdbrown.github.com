@@ -1,0 +1,15 @@
+---
+layout: post
+title: Populate python dictionary using generator
+date: '2008-04-15 04:36:00 -0400'
+mt_id: 46
+categories:
+- python
+---
+<p>Two ways to load a dictionary with keys and values:</p>
+<pre class="prettyprint"># Using builtin zip()
+d = dict(zip(the_keys, the_values))
+
+# Using itertools.izip()
+import itertools
+d = dict(itertools.izip(the_keys, the_values)</pre>

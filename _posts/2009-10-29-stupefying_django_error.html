@@ -1,0 +1,79 @@
+---
+layout: post
+title: Stupefying Django error
+date: '2009-10-29 16:10:59 -0400'
+mt_id: 1564
+categories:
+- django
+- python
+- programming
+---
+<p>Wow. I spent a lot of time on this this afternoon. I had a Django application with an admin interface. Every time I tried to create an object with no foreign keys, I got this error on the save:</p>
+
+<pre class="prettyprint">
+Traceback (most recent call last):
+
+  File "C:\Python26\lib\site-packages\django\core\servers\basehttp.py", line 279, in run
+    self.result = application(self.environ, self.start_response)
+
+  File "C:\Python26\lib\site-packages\django\core\servers\basehttp.py", line 651, in __call__
+    return self.application(environ, start_response)
+
+  File "C:\Python26\lib\site-packages\django\core\handlers\wsgi.py", line 241, in __call__
+    response = self.get_response(request)
+
+  File "C:\Python26\lib\site-packages\django\core\handlers\base.py", line 134, in get_response
+    return self.handle_uncaught_exception(request, resolver, exc_info)
+
+  File "C:\Python26\lib\site-packages\django\core\handlers\base.py", line 154, in handle_uncaught_exception
+    return debug.technical_500_response(request, *exc_info)
+
+  File "C:\Python26\lib\site-packages\django\views\debug.py", line 40, in technical_500_response
+    html = reporter.get_traceback_html()
+
+  File "C:\Python26\lib\site-packages\django\views\debug.py", line 86, in get_traceback_html
+    frames = self.get_traceback_frames()
+
+  File "C:\Python26\lib\site-packages\django\views\debug.py", line 205, in get_traceback_frames
+    pre_context_lineno, pre_context, context_line, post_context = self._get_lines_from_file(filename, lineno, 7, loader, module_name)
+
+  File "C:\Python26\lib\site-packages\django\views\debug.py", line 186, in _get_lines_from_file
+    context_line = source[lineno].strip('\n')
+
+IndexError: list index out of range
+</pre>
+
+<p>Totally mysterious: there is not a line of my code in the trace stack and I have no idea what file it is trying to index into. I really made no progress on this until I tried the shell:</p>
+
+<pre class="prettyprint">
+&gt;&gt;&gt; from django_league.league.models import *
+&gt;&gt;&gt; Sport.objects.create(sport_name='Hockey')
+__unicode__
+Traceback (most recent call last):
+  File "lgt;console&gt;", line 1, in lgt;module&gt;
+  File "C:\Python26\lib\site-packages\django\db\models\base.py", line 328, in __
+repr__
+    u = unicode(self)
+  File "C:\Users\hughdbrown\Documents\django\django_league\..\django_league\leag
+ue\models.py", line 17, in __unicode__
+    return u"%s" % (sport_name, )
+NameError: global name 'sport_name' is not defined
+</pre>
+
+<p>Now we're getting somewhere, I thought. I have a function of mine in scope. The problem was that I had defined my __unicode__ method without using <em>self</em> in the code:</p>
+
+<pre class="prettyprint">
+class Sport(models.Model):    
+    sport_name = models.CharField(max_length=20)
+    def __unicode__(self):
+        return u"%s" % (<strong>self.</strong>sport_name, )
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('sport', None, {'object_id' : self.id})
+
+    class Meta:
+        ordering = ['sport_name']
+</pre>
+
+<p>So fixing it was pretty easy once I knew that.</p>

@@ -1,0 +1,101 @@
+---
+layout: post
+title: VB.NET code to implement Excel Rank()
+date: '2009-10-13 13:13:20 -0400'
+mt_id: 1560
+categories:
+- programming
+- python
+- net
+---
+<p>Recently, I had to implement the Excel function Rank() for a project. I came up with this templatized LINQ code:</p>
+
+<pre class="prettyprint">
+Public Class ReversedComparer(Of T As IComparable)
+    Implements IComparer(Of T)
+    Public Function Compare(ByVal x As T, ByVal y As T) As Integer _
+    Implements System.Collections.Generic.IComparer(Of T).Compare
+       Return -x.CompareTo(y)
+    End Function
+End Class
+
+Private Shared Function BinarySearch(Of T As IComparable)(ByRef x() As T, _
+                                     ByVal val As T, _
+                                     ByVal comparer As IComparer(Of T)) As Integer
+    Dim lo As Integer = 0, hi As Integer = x.Count - 1
+    While lo <= hi
+        Dim mid As Integer = (hi + lo) \ 2
+        If comparer.Compare(val, x(mid)) <> 1 Then
+            hi = mid - 1
+        Else
+            lo = mid + 1
+        End If
+    End While
+    Return CInt(If(comparer.Compare(x(lo), val) = 0, lo, -1))
+End Function
+
+Public Shared Function Rank(ByRef X() As Double) As Integer()
+    Dim sorted() As Double = (From xx In X Order By xx Descending Select xx).ToArray()
+     Dim comparer As IComparer(Of Double) = New ReversedComparer(Of Double)
+     Return X.Select(Function(val) 1 + BinarySearch(Of Double)(sorted, val, comparer)).ToArray()
+End Function
+</pre>
+
+<p>And it's pretty good as far as it goes. It takes a copy of the data in reverse-sorted order and then does a binary search to find the 0-based position in the array for each element in the original array. And that's fine, but I wanted to implement something more like my python code:</p>
+
+<pre class="prettyprint">
+import collections
+def rank(arr):
+	"""
+	>>> a = list(range(10))
+	>>> print rank(a)
+	[10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+	>>> b = list(range(10))
+	>>> b.reverse()
+	>>> print rank(b)
+	[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+	>>> c = [5] * 10
+	>>> print rank(c)
+	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+	>>> d = ([5] * 5) + ([1] * 5)
+	>>> d
+	[5, 5, 5, 5, 5, 1, 1, 1, 1, 1]
+	>>> print rank(d)
+	[1, 1, 1, 1, 1, 6, 6, 6, 6, 6]
+	"""
+	d = collections.defaultdict(list)
+	for i, v in enumerate(arr):
+		d[v].append(i)
+	result = [0] * len(arr)
+	i = 1
+	for k in sorted(d, reverse = True):
+		for j in d[k]:
+			result[j] = i
+		i += len(d[k])
+	return result
+
+if __name__ == '__main__':
+	import doctest
+	doctest.testmod()
+ </pre>
+
+<p>So I worked through the LINQ issues using the LinqPad interpreter and came up with this:</p>
+
+<pre class="prettyprint">
+Function Rank(Of T)(Byref x() as T) as Integer()
+    Dim original_pos = x.Select(Function(xx, index) New With {.Val = xx, .Index = index}) _
+             .ToLookup(Function(xxx) xxx.Val)
+    Dim keys = original_pos.OrderByDescending(Function(yy) yy.Key)    
+    Dim result(x.Count-1) as Integer
+    Dim i as Integer = 1
+    For Each item in keys
+        For Each v in item
+            result(v.Index) = i
+        Next
+        i = i + item.Count
+    Next
+    Return result
+End Function
+</pre>
+
+<p>And I think that's pretty good code: templatized LINQ code that uses lambda functions and implements the algorithm as quickly as I know how.</p>

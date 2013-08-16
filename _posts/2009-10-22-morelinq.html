@@ -1,0 +1,14 @@
+---
+layout: post
+title: MoreLinq
+date: '2009-10-22 12:01:30 -0400'
+mt_id: 1561
+categories:
+- net
+- programming
+---
+<p>Recently, I wanted a way to iterate over two sequences in LINQ the same way you do in functional languages like python. It's most commonly called zip() and it works like this:</p>
+
+<pre class="prettyprint">seq = [fn(a1, b1) for a1, b1 in zip(a, b)]</pre>
+
+<p>This applies a function fn() to each pair of variables pulled from a and b together. There is no direct way to do this in LINQ 3.5, but I came across <a href="http://code.google.com/p/morelinq/">MoreLinq</a> which has an implementation of zip() and many other useful functions.</p>

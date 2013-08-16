@@ -1,0 +1,51 @@
+---
+layout: post
+title: Getting github working in Windows
+date: '2009-06-01 02:40:23 -0400'
+mt_id: 1547
+---
+<p>What a nightmare. I generated an SSH key on Windows with puttygen to submit to github but I could not get <em>git</em> to retrieve the code I had authored. (Somehow, I'd managed to put the initial revision up and then broken things -- perhaps with a clone using the general URL.) Using <em>SSH -vi &lt;key&gt; github.com</em> did not help -- I still got <i>Permission denied (public key)</i> errors.</p>
+
+<p>I ended up generating the SSH key on Ubuntu, copying that into github, and confirming that I could SSH to github.com. Here were my steps:</p>
+
+<pre class="prettyprint">
+# Generate the rsa keys
+cd ~
+ssh-keygen -t rsa
+chmod 600 ~/.ssh/id_rsa.*
+ssh-add ~/.ssh/id_rsa.pub
+
+# Copy public key to clipboard, paste into github
+cat ~/.ssh/id_rsa.pub | xclip -selection clipboard
+
+# Test: connect to github through console
+ssh -F config -vi ~/.ssh/id_rsa.pub github.com
+
+# Actually clone the source
+cd ~/src
+git clone git@github.com:username/project.git
+</pre>
+
+<p>Still, I wanted to get <em>git</em> working on my Windows box. <a href="http://github.com/guides/addressing-authentication-problems-with-ssh">This web page</a> was instructive. Once I realized that the message meant that it could not find the key and that the default location is <i>~/.ssh</i>, I copied the keys to <em>.ssh</em> under my home directory on Windows. Doh! You get it? The tilde stands for <em>c:\users\username</em> on Vista and Windows 7 and <em>c:\Documents and Settings\username</em> in Windows 2000 and XP. It's just not a Windows convention to use tilde -- or to use directory names that start with a period. For good measure, I added a config file for that directory:</p>
+
+<pre class="prettyprint">
+Host github.com
+  User git
+  Port 22
+  Hostname github.com
+  IdentityFile ~/.ssh/id_rsa
+  TCPKeepAlive yes
+  IdentitiesOnly yes
+  PreferredAuthentications publickey
+</pre>
+
+<p>I think that if you copy your RSA key files to <em>C:\Program files\git\.ssh</em> with the config file above, you can then run this command to make sure all is well:</p>
+<pre class="prettyprint">
+"C:\Program files\git\bin\ssh" -vi id_rsa.pub -F config git@github.com
+</pre>
+
+<p>Ideally, you'll be asked to confirm the github.com signature, prompted for the public key's signature three times (and since you made it without a password, you'll just hit ENTER three times), and get a message that there is no shell acccess to github. I think that there will then be a <em>known_hosts</em> file in the <em>.ssh</em> directory and the keys will have been copied to <em>~/.ssh</em>. Copy the config file there for good measure and you should be able to run <em>git</em> to push code from your source directory.</p>
+
+<br /><hr /><br />
+
+<p>2009-06-08: I had to revisit this today. I could not connect on a Windows box because it was picking up the wrong <em>ssh</em> from my path. The workaround is to set the exact one desired using the environment variable, GIT_SSH.</p>

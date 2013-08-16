@@ -1,0 +1,21 @@
+---
+layout: post
+title: Python groupby() code
+date: '2008-04-07 11:09:00 -0400'
+mt_id: 33
+categories:
+- python
+---
+<p>I think that python's itertools.groupby() function is pretty cool. Here is some sample code:</p>
+
+<pre class="prettyprint">import itertools
+import operator
+
+city_list = [
+  ('Decatur', 'AL'), ('Huntsville', 'AL'), ('Selma', 'AL'),
+  ('Anchorage', 'AK'), ('Nome', 'AK'),
+  ('Flagstaff', 'AZ'), ('Phoenix', 'AZ'), ('Tucson', 'AZ')]
+
+a = itertools.groupby(city_list, operator.itemgetter(1))
+print [ (state, ",".join(i[0] for i in it)) 
+  for state, it in a ]</pre>

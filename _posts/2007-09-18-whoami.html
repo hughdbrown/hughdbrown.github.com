@@ -1,0 +1,30 @@
+---
+layout: post
+title: Whoami
+date: '2007-09-18 03:48:00 -0400'
+mt_id: 56
+---
+<p>Code to translate user name to Windows SID</p>
+
+<pre class="prettyprint">using System;
+using System.DirectoryServices;
+using System.Security.Principal;
+
+
+class Program
+{
+  static void Main(string[] args)
+  {
+    foreach (string arg in args)
+    {
+      string path = String.Format("WinNT://KBCFP/{0}", arg);
+      DirectoryEntry root = 
+        new DirectoryEntry(path, null, null, 
+        AuthenticationTypes.Secure);
+      SecurityIdentifier si = 
+        new SecurityIdentifier((byte[])
+        root.Properties["objectSid"][0], 0);
+      Console.WriteLine("{0}: {1}", arg, si.Value);
+    }
+  }
+}</pre>

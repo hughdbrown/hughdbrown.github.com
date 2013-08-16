@@ -1,0 +1,14 @@
+---
+layout: post
+title: FTP library for .NET
+date: '2006-02-04 01:03:00 -0500'
+mt_id: 682
+---
+<p><a href="http://www.codeproject.com/csharp/ftplibrary.asp">FTP library for .NET</a><br />
+
+The programming model looks very simple:</p>
+<pre class="prettyprint lang-cs">
+	FtpClient ftp = new FtpClient(FtpServer,FtpUserName,FtpPassword);
+	ftp.Login();
+	ftp.Upload(@"C:\image.jpg");
+	ftp.Close();</pre>

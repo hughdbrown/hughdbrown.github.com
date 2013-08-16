@@ -1,0 +1,58 @@
+---
+layout: post
+title: Pretty code
+date: '2008-05-29 02:53:51 -0400'
+mt_id: 1139
+categories:
+- movable_type
+- programming
+---
+<p>Thanks to several google-translated Japanese Movable Type blog entries 
+[<a href="http://blog.makotokw.com/2007/10/27/movable_type_4googlecodepretti/l">makotokw</a>, 
+<a href="http://kazuno.biz/2007/05/googlecodeprettify_fizzbuzz.html">kazuno</a>, and 
+<a href="http://tadateto.net/2007/09/23/0412.html">tadateto</a>], 
+I've finally figured out how to hack MT to get python code pretty-printed. (To read these Japanese articles, I recommend searching using google and then pressing <em>Translate this page</em>.) The code is downloaded from 
+<a href="http://code.google.com/p/google-code-prettify/">google</a> 
+and the original idea was from 
+<a href="http://wordaligned.org/">Thomas Guest</a>.</p>
+
+<p>To get this to work, you have to do four things:</p>
+<ol>
+	<li>Add google's prettify.css stylesheet to your header page template<br />
+<pre class="prettyprint">&lt;link rel="stylesheet" href="/mt-static/css/prettify.css" type="text/css" /&gt;</pre></li>
+	<li>Add google's prettify.js JavaScript to you header page template<br />
+<pre class="prettyprint">&lt;script type="text/javascript" src="/mt-static/js/prettify.js"&gt; &lt;/script&gt;</pre></li>
+	<li>Get your body.onload to call prettyPrint()<br />
+<pre class="prettyprint">&lt;body class="mt-main-index layout-wtt" onload="prettyPrint();"&gt;</pre></li>
+	<li>Mark the sections that you want pretty-printed<br />
+<pre class="prettyprint">&lt;pre class="prettyprint"&gt;</pre></li>
+</ol>
+
+<p>The third step is the most involved. You have to change three templates:</p>
+<ol>
+	<li>Page<br />
+<pre class="prettyprint"><strong>&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;prettyPrint();&quot;&gt;</strong>
+&lt;MTIfCommentsAccepted&gt;
+    &lt;$MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>individualArchivesOnLoad(commenter_name)&quot;$&gt;
+&lt;/MTIfCommentsAccepted&gt;</pre></li>
+	<li>Entry<br />
+<pre class="prettyprint"><strong>&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;prettyPrint();&quot;&gt;</strong>
+&lt;MTIfCommentsAccepted&gt;&lt;
+    $MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>individualArchivesOnLoad(commenter_name)&quot;$&gt;
+&lt;/MTIfCommentsAccepted&gt;
+</pre></li>
+	<li>Comment Preview<br />
+<pre class="prettyprint">&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>individualArchivesOnLoad(commenter_name)&quot;&gt;
+</pre></li>
+</ol>
+
+<br /><hr /><br />
+<p>2008-06-27: Did I say three templates? I meant five. Here are two more templates to change:</p>
+<ol>
+	<li>Search results<br />
+<pre class="prettyprint">&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>&quot;&gt;
+</pre></li>
+	<li>Archive index<br />
+<pre class="prettyprint">&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>&quot;&gt;
+</pre></li>
+</ol>

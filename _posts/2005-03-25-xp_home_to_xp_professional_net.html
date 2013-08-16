@@ -1,0 +1,21 @@
+---
+layout: post
+title: XP Home to XP Professional networking
+date: '2005-03-25 02:12:00 -0500'
+mt_id: 854
+---
+<p>XP Home to XP Professional networking</p>
+
+<p>If your XP Pro machine has "Use simple file sharing" enabled, then the XP
+Home machine will authenticate as guest. You don't need to enable the
+guest account (in the User Accounts control panel) but you do need to edit
+the local policy to allow guest to access the computer from the network.</p>
+
+<pre class="prettyprint">Local Policies-&gt;User Rights Assignment-&gt;Deny access to this computer from the network </pre>
+
+<p>If you don't have "use simple file sharing" enabled, then the user on the
+XP Home machine must have an account with the exact username and password
+on the XP Pro machine for it to authenticate to.</p>
+
+<p>Also, enabling the Guest account in the control panel enables enables local
+logon for the Guest account.  I don't think it enables network logon.</p>

@@ -1,0 +1,79 @@
+---
+layout: post
+title: ! 'Vijay Santhanam code: IDisposable wrapper and ReaderWriterSlimLock'
+date: '2008-12-03 19:46:09 -0500'
+mt_id: 1374
+categories:
+- programming
+---
+<p><a href="http://vijay.screamingpens.com/">Vijay Santhanam</a> has a small blog with quality material that I really like. There are a couple of bits of code that I want to use in my own applications and frameworks, so I am writing them out here:</p>
+
+<ul>
+<li><a href="http://vijay.screamingpens.com/archive/2008/05/26/actiondisposable.aspx">ActionDisposable</a>, code to wrap IDisposable around any object
+<pre class="prettyprint lang-cs">using System;
+using System.Linq;
+
+namespace System
+{
+    public class ActionDisposable: IDisposable
+    {
+        Action action;
+        public ActionDisposable(Action action)
+        {
+            this.action = action;
+        }
+
+        public void Dispose()
+        {
+            action();
+        }
+    }
+}</pre></li>
+
+<li>Similar code to <a href="http://vijay.screamingpens.com/archive/2008/08/08/readerwriterlockslim-extension-methods.aspx">wrap IDisposable around ReaderWriterLockSlim</a>
+<pre class="prettyprint lang-cs">namespace System.Threading
+{
+    public static class ReaderWriteLockExtensions
+    {
+        struct Disposable : IDisposable
+        {
+            readonly Action action;
+            public Disposable(Action action)
+            {
+                this.action = action;
+            }
+
+            public void Dispose()
+            {
+                action();
+            }
+        }
+
+        public static IDisposable ReadLock(this ReaderWriterLockSlim l)
+        {
+            l.EnterReadLock();
+            return new Disposable(l.ExitReadLock);
+        }
+
+        public static IDisposable UpgradableReadLock(this ReaderWriterLockSlim l)
+        {
+            l.EnterUpgradeableReadLock();
+            return new Disposable(l.ExitUpgradeableReadLock);
+        }
+
+        public static IDisposable WriteLock(this ReaderWriterLockSlim l)
+        {
+            l.EnterWriteLock();
+            return new Disposable(l.ExitWriteLock);
+        }
+    }
+}</pre></li>
+
+<li>Sample code for using the IDisposable ReaderWriterSlimLock:
+<pre class="prettyprint lang-cs">
+    var rwLock = new ReaderWriterLockSlim();
+    using (rwLock.ReadLock())
+    {
+        // do reading stuff
+    }</pre><li>
+</ul>

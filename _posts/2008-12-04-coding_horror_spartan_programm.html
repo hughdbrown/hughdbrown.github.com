@@ -1,0 +1,21 @@
+---
+layout: post
+title: ! 'Coding Horror: Spartan programming'
+date: '2008-12-04 19:29:09 -0500'
+mt_id: 1389
+categories:
+- programming
+---
+<h1><a href="http://www.codinghorror.com/blog/archives/001148.html">Spartan programming</a></h1>
+
+<p>The discipline of spartan programming means frugal use of variables:</p>
+
+<ul>
+<li>Minimize number of variables. Inline variables which are used only once. Take advantage of foreach loops.
+</li><li>Minimize visibility of variables and other identifiers. Define variables at the smallest possible scope.
+</li><li>Minimize accessibility of variables. Prefer the greater encapsulation of private variables.
+</li><li>Minimize variability of variables. Strive to make variables final in Java and const in C++. Use annotations or restrictions whenever possible.
+</li><li>Minimize lifetime of variables. Prefer ephemeral variables to longer lived ones. Avoid persistent variables such as files.
+</li><li>Minimize names of variables. Short-lived, tightly scoped variables can use concise, terse names.
+</li><li>Minimize use of array variables. Replace them with collections provided by your standard libraries.</li>
+</ul>

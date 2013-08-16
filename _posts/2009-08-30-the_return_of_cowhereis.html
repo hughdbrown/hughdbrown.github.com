@@ -1,0 +1,56 @@
+---
+layout: post
+title: The return of CoWhereIs
+date: '2009-08-30 15:01:05 -0400'
+mt_id: 1559
+categories:
+- net
+- python
+- programming
+---
+<p>A long time ago, I wrote CoWhereIs in C/C++. It was a small program to search the registry for where a COM server was to be found. Back in the mists of time, this was something you needed to do from time to time if you were a COM developer, as I was. And somewhere along the way, I stopped needing to do that and I lost the source code. But it was no big problem because I was no longer working with COM.</p>
+
+<p>And now I find that I have some .NET code that implements user defined functions (UDFs) in Excel 2007 and it turns out that the integration between Excel and .NET is stuck in 2005: the code has to be exposed as a COM server that is installed with regasm on your machine. So now I need an installer and I need to test the installer to see if it is, in fact, calling regasm to patch the registry so that my .NET/COM server is actually available.</p>
+
+<p>And so I found myself rewriting CoWhereIs to search the registry. This time, I've written it in python because the times have changed. Enjoy.</p>
+
+<pre class="prettyprint">from __future__ import with_statement
+from _winreg import *
+import os.path
+
+class MissingProgIDException(Exception):
+    pass
+class MissingCLSIDException(Exception):
+    pass
+
+def getCLSID(progID):
+    key = r'%s\CLSID' % progID
+    try:
+        with OpenKey(HKEY_CLASSES_ROOT, key) as h:
+            return QueryValue(h, "")
+    except WindowsError, err:
+        print r"Missing progID: HKEY_CLASSES_ROOT\%s" % key
+        raise MissingProgIDException()
+
+def CoWhereIs(progID):
+    clsid = getCLSID(progID)
+    print "ProgID %s is CLSID %s" % (progID, clsid)
+    key = r'CLSID\%s\InProcServer32' % clsid
+    try:
+        with OpenKey(HKEY_CLASSES_ROOT, key) as h2:
+            location = QueryValueEx(h2, "CodeBase")
+            file_name = location[0].replace("file:///", "")
+            file_loc = file_name.replace(r'/', r'\\')
+            print file_loc, ": File exists?", os.path.exists(file_loc)
+    except WindowsError, err:
+        print r"Missing CLSID: HKEY_CLASSES_ROOT\%s" % key
+        raise MissingCLSIDException()
+
+if __name__ == '__main__':
+    import sys
+    for arg in sys.argv[1:]:
+        try:
+            CoWhereIs(arg)
+        except:
+            pass
+</pre>

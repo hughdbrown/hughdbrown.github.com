@@ -1,0 +1,54 @@
+---
+layout: post
+title: Python analytics
+date: '2007-04-26 05:13:00 -0400'
+mt_id: 232
+categories:
+- python
+---
+<p>These use the numpy library, I believe. I adapted them to work in a more vanilla python way as I could not get my head around numpy.</p>
+
+<p>Exponential moving average</p>
+<pre class="prettyprint">
+def ema(s, n):
+    """
+    returns an n period exponential moving average for
+    the time series s
+
+    s is a list ordered from oldest (index 0) to most recent
+    (index -1) n is an integer
+
+    returns a numeric array of the exponential moving average
+    """
+    s = array(s)
+    ema = []
+    j = 1
+    #get n sma first and calculate the next n period ema
+    sma = sum(s[:n]) / n
+    multiplier = 2 / float(1 + n)
+    ema.append(sma)
+    #EMA(current) = ( (Price(current) - EMA(prev) ) xMultiplier) + EMA(prev)
+    ema.append(( (s[n] - sma) * multiplier) + sma)
+    #now calculate the rest of the values
+    for i in s[n+1:]:
+        tmp = ( (i - ema[j]) * multiplier) + ema[j]
+        j = j + 1
+        ema.append(tmp)
+    return ema</pre>
+
+<p>Simple moving average</p>
+<pre class="prettyprint">
+def movavg(s, n):
+    """
+    returns an n period moving average for the time series s
+       
+    s is a list ordered from oldest (index 0) to most recent (index -1)
+    n is an integer
+
+        returns a numeric array of the moving average
+
+    See also ema in this module for the exponential moving average.
+    """
+    s = array(s)
+    c = cumsum(s)
+    return (c[n-1:] - c[:-n+1]) / float(n-1)</pre>

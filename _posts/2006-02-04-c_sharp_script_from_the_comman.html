@@ -1,0 +1,14 @@
+---
+layout: post
+title: C Sharp script from the command line
+date: '2006-02-04 12:32:00 -0500'
+mt_id: 788
+---
+<h1><a href="http://www.codeproject.com/csharp/CSharpScript.asp">C Sharp script from the command line</a></h1>
+<blockquote class="quote"><p>RunScript takes care of all the hard work. Basically, the following steps occur:</p>
+<ol>
+	<li>The script file is read in, if the line includes a #using, #import, or #target directive, then it is skipped, and these are explained below.</li>
+	<li>The "Compiler" will insert using statements at the beginning of the source file and reference the necessary assemblies.</li>
+	<li>The "Compiler" will then create a namespace, a class, and possibly a Main routine to encapsulate the script.</li>
+	<li>It will then decide whether Main was declared with or without the command-line arguments option and invoke the appropriate method.</li>
+</ol></blockquote>

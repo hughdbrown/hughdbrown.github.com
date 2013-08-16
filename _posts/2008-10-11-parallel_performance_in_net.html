@@ -1,0 +1,20 @@
+---
+layout: post
+title: Parallel performance in .NET
+date: '2008-10-11 23:52:40 -0400'
+mt_id: 1302
+categories:
+- net
+- parallel
+---
+<h1><a href="http://msdn.microsoft.com/en-gb/magazine/cc163329.aspx">Running Queries On Multi-Core Processors</a></h1>
+
+<blockquote class="quote"><p>PLINQ is a query execution engine that accepts any LINQ-to-Objects or LINQ-to-XML query and automatically utilizes multiple processors or cores for execution when they are available. The change in programming model is tiny, meaning you don't need to be a concurrency guru to use it. In fact, threads and locks won't even come up unless you really want to dive under the hood to understand how it all works. PLINQ is a key component of Parallel FX, the next generation of concurrency support in the Microsoft &174; .NET Framework.</p>
+
+<p>Using technologies like PLINQ will become increasingly crucial to ensuring the scalability of software on future parallel microprocessor architectures. By utilizing LINQ at choice places throughout your applications today--such as where you have data- or compute-intensive operations that can be expressed as queries--you will ensure that those fragments of your programs continue to perform better when PLINQ becomes available and the machines running your application grow from 2 to 4 to 32 processors and beyond. And even if you only run that code on a single-processor machine, the overhead of PLINQ is typically so small that you won't notice a difference. In addition, the data parallel nature of PLINQ ensures your programs will continue to scale as the size of your data sets increases.</p></blockquote>
+
+<h1><a href="http://msdn.microsoft.com/en-gb/magazine/cc163340.aspx">Optimize Managed Code For Multi-Core Machines</a></h1>
+
+<blockquote class="quote"><p>The Task Parallel Library (TPL) is designed to make it much easier to write managed code that can automatically use multiple processors. Using the library, you can conveniently express potential parallelism in existing sequential code, where the exposed parallel tasks will be run concurrently on all available processors. Usually this results in significant speedups.</p>
+
+<p>TPL is being created as a collaborative effort by Microsoft &174; Research, the Microsoft Common Language Runtime (CLR) team, and the Parallel Computing Platform team. TPL is a major component of the Parallel FX library, the next generation of concurrency support for the Microsoft .NET Framework. Though it has not yet reached version 1.0, the first Parallel FX Community Tech Preview (CTP) will be available from MSDN &174; in Fall '07. Watch <a href="http://blogs.msdn.com/somasegar">http://blogs.msdn.com/somasegar</a> for details. TPL does not require any language extensions and works with the .NET Framework 3.5 and higher.</p></blockquote>

@@ -1,0 +1,16 @@
+---
+layout: post
+title: Lock-free hashtables
+date: '2008-10-22 13:22:05 -0400'
+mt_id: 1323
+---
+<h1><a href="http://video.google.com/videoplay?docid=2139967204534450862">Google video on lock-free hashtables</a></h1>
+<p>Talk on implementation of a lock-free hashtable in Java on a multiprocessor box -- like 100 to 700 cpus.</p>
+<!--
+closed power-of-2 hash table (can get index from hash using AND operation)
+reprobe on collision
+put operation does not allocate
+key slot is [ null or key ]
+value is [ null, tombstone for deleted value, or value ]
+once a key is set, it never changes; table fills up with dead keys
+-->

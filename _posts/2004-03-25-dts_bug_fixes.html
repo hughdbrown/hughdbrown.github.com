@@ -1,0 +1,27 @@
+---
+layout: post
+title: DTS bug fixes
+date: '2004-03-25 01:44:00 -0500'
+mt_id: 1027
+---
+<p>DTS bug fixes</p>
+<ul>
+	<li><a href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;293320">MS KB 293320</a></li>
+	<li><a href="http://support.microsoft.com/default.aspx?scid=kb;EN-US;293223">MS KB 293223</a></li>
+</ul>
+
+<p>CRC in .NET</p>
+<ul>
+	<li><a href="http://www.google.com/search?q=CRC32+.NET">Google</a></li>
+	<li><a href="http://weblogs.asp.net/mreynolds/archive/2003/09/24/28909.aspx">M Reynolds's weblog</a></li>
+	<li><a href="http://www.123aspx.com/resdetail.aspx?res=31362">123aspx</a></li>
+</ul>
+
+<p>Measuring memory in a .NET app</p>
+<pre class="prettyprint">GC.Collect();
+GC.WaitForPendingFinalizers();
+Console.WriteLine("Mem=" + System.Diagnostics.Process.GetCurrentProcess().PrivateMemorySize.ToString());</pre>
+
+<p>Sending email from a WinForms app<br />
+This will pop open a new message for their default mail client.</p>
+<pre class="prettyprint">System.Diagnostics.Process.Start("Mailto:");</pre>

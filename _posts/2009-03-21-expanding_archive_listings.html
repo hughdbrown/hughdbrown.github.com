@@ -1,0 +1,59 @@
+---
+layout: post
+title: Expanding archive listings
+date: '2009-03-21 21:21:58 -0400'
+mt_id: 1540
+categories:
+- movable_type
+---
+<p>I've changed the HTML of my HTML header and archive pages so that the monthly archives and category archives do not display expanded. Instead, they are presented contracted and can be expanded with a click on the respective headers. It bugged me that the pages for these were so long when the archives are not necessarily used.</p>
+
+<br /><hr /><br />
+
+<p>Update 2009-03-27: I did the same thing for Recent Comments and Recent Entries. Here are the required edits:</p>
+<ol>
+<li>Widgets
+<ul>
+	<li>Recent Comments widget</li>
+	<li>Recent Entries widget</li>
+	<li>Monthly Archives widget</li>
+	<li>Category Archives widget</li>
+</ul>
+<p>Changes in bold, metanames in italics.</p>
+<pre class="prettyprint  lang-html">
+<strong>    &lt;a href="javascript:animatedcollapse.toggle('<em>WidgetId</em>')"&gt;</strong>
+    &lt;h3 class="widget-header"&gt;Monthly Archives&lt;/h3&gt;
+<strong>    &lt;/a&gt;</strong>
+    &lt;div <strong>id="<em>WidgetId</em>"</strong> class="widget-content"&gt;
+</pre>
+</li>
+
+<li>HTML Head template
+<p>Add javascript to the HEAD section of the page. 'divs' matches the names given to each of the div elements in the previous step.</p>
+<pre class="prettyprint  lang-js">
+&lt;script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="/mt-static/js/animatedcollapse.js"&gt;
+/***********************************************
+* Animated Collapsible DIV v2.2- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+* This notice MUST stay intact for legal use
+* Visit Dynamic Drive at http://www.dynamicdrive.com/ for this script and 100s more
+***********************************************/
+&lt;/script&gt;
+
+&lt;script type="text/javascript"&gt;
+divs = [ 'Categories', 'MonthlyArchives', 'RecentEntries', 'RecentComments' ]
+for (x in divs) { animatedcollapse.addDiv(divs[x]) }
+animatedcollapse.init()
+
+$(document).ready(function() {
+    for (x in divs) { animatedcollapse.toggle(divs[x]) }
+});
+&lt;/script&gt;
+</pre>
+</li>
+
+<li>animatedcollapse.js
+<p>Copy this file from dynamicdrive.com to /mt-static/js/animatedcollapse.js</p>
+</li>
+
+</ol>

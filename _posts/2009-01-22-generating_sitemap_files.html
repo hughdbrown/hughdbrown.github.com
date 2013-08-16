@@ -1,0 +1,57 @@
+---
+layout: post
+title: Generating sitemap files
+date: '2009-01-22 14:24:37 -0500'
+mt_id: 1515
+categories:
+- programming
+---
+<p>Recently, I moved my site to a new ISP. Normally, this would not involve resubmitting to search engines, but I had to change the URL to include my blog name, so the URLs were all changed. Hence, the resubmission problem.</p>
+
+<p>Submitting to google, yahoo, and a few others was the same, but when I tried ask.com, I realized that the protocol had changed in the past few years. Instead of giving one of the search engines the URL of your site, it has become increasingly common to require that the site have a sitemap file that lists all of the URLs that you wish to have submitted. Since I could not find code to do this, I rolled my own.</p>
+
+<ul>
+	<li>Download <a href="/files/sitemap.py.txt">sitemap.py</a></li>
+	<li>Based on protocol specification <a href="http://www.sitemaps.org/protocol.php">here</a></li>
+	<li>Directory walking classes adapted from <a href="http://code.activestate.com/recipes/528904/">recipe at ActiveState.com</a></li>
+</ul>
+
+
+<!--
+http://www.sitemaps.org/protocol.php
+
+http://www.example.com/sitemap.xml
+
+For Sitemaps:  http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd
+For Sitemap index files: http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd
+
+ The Sitemap must:
+
+    * Begin with an opening <urlset> tag and end with a closing </urlset> tag.
+    * Specify the namespace (protocol standard) within the <urlset> tag.
+    * Include a <url> entry for each URL, as a parent XML tag.
+    * Include a <loc> child entry for each <url> parent tag.
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+   <url>
+      <loc>http://www.example.com/</loc>
+      <lastmod>2005-01-01</lastmod>
+      <changefreq>monthly</changefreq>
+      <priority>0.8</priority>
+   </url>
+</urlset> 
+
+
+
+
+http://submissions.ask.com/ping?sitemap=www.iwebthereforeiam.com/iwebthereforeiam/sitemap.xml
+http://www.sitemaps.org/protocol.php
+http://www.sitemaps.org/faq.php
+
+
+http://code.activestate.com/recipes/528904/
+
+http://blog.ask.com/2007/04/sitemaps_autodi.html
+-->

@@ -1,0 +1,128 @@
+---
+layout: post
+title: FIX protocol
+date: '2008-04-26 01:24:00 -0400'
+mt_id: 17
+categories:
+- finance
+- programming
+---
+<p><a href="http://www.quickfixengine.org/">QuickFIX</a> is a full-featured open source FIX engine, currently compatible with the FIX 4.0-4.4 spec. It runs on Windows, Linux, Solaris, FreeBSD and Mac OS X. API's are available for C++, Java, .NET, Python and Ruby.</p>
+
+<p>Links to documents</p>
+<ul>
+	<li>[<a href="http://www.fixprotocol.org/">FIX protocol</a>]</li>
+	<li>[<a href="http://www.fixprotocol.org/working_groups/algowg/documents">Algorithmic Trading Working Group - public archive</a>]</li>
+	<li>[<a href="http://www.devchix.com/2007/04/20/fix-protocol/">Short overview of FIX</a>]</li>
+</ul>
+
+<p>The following was scraped from an <a href="http://www.slideshare.net/BrianDriscoll/barcampnyc3-intro-to-fix">online PowerPoint presentation</a>:</p>
+<blockquote class="quote">
+<p>Session level messages</p>
+<ul>
+	<li>logon/logout</li>
+	<li>heartbeat</li>
+	<li>test request</li>
+	<li>resend request</li>
+	<li>reject</li>
+	<li>sequence reset</li>
+</ul>
+
+<p>Application level messages</p>
+<ul>
+	<li>new order</li>
+	<li>execution report</li>
+	<li>order cancel/replace request</li>
+	<li>allocation</li>
+	<li>trade capture report</li>
+	<li>confirmation</li>
+</ul>
+
+<p>For each field:</p>
+<ul>
+	<li>tag (a unique number)</li>
+	<li>field name</li>
+	<li>data type (string, char, price, quantity)</li>
+	<li>description</li>
+	<li>FIXML name (XML element name)</li>
+</ul>
+
+<p>User-defined messages</p>
+<p>User-defined fields</p>
+
+Message syntaxes
+<ol>
+<li>'tag=value' syntax
+<ol>
+	<li>tag (tag number)</li>
+	<li>=</li>
+	<li>value</li>
+	<li>delimiter (ASCII SOH)</li>
+</ol></li>
+
+<li>FIXML syntax
+<ul>
+	<li>XML schema defined</li>
+	<li>application messages only, no session level</li>
+</ul></li>
+</ol>
+
+<p>Sample transaction<br />
+(1) buy side connect to TCP socket on port of sell side FIX engine<br />
+(2) sell side accepts TCP connection<br />
+(1) send Logon message<br />
+(2) send Logon message back<br />
+(1) send New Order message<br />
+(2) send Execution Report acknowledging order<br />
+(2) send Execution Report containing fill</p>
+
+<p>Buy 5000 IBM at 110.75</p>
+<pre class="prettyprint">
+8=FIX4.2^		# BeginString
+9=251^			# BodyLength
+35=D^			# MsgType (New Order)
+49=AFUNDMGR^		# SenderCompID (AFUNDMGR)
+56=ABROKER^		# TargetCompID (ABROKER)
+34=2^			# MsgSeqNum (2)
+52=20030615-01:14:49^	# SendTime
+11=12345^		# ClOrderID (CLient Order ID)
+21=1^			# HandleInst (automated exec)
+55=IBM^			# Symbol (IBM)
+54=1^			# Side (buy)
+60=2003061501:14:49^	#
+38=5000^		# OrderQty (5000)
+40=2^			# OrdType (Limit)
+44=110.75^		# Price (110.75)
+10=127^			# Checksum</pre>
+</blockquote>
+
+<pre class="prettyprint">&lt;FIXML&gt;
+&lt;FIXMLMessage&gt;
+&lt;Header&gt;
+&lt;SendingTime&gt;&lt;/SendingTime&gt;
+&lt;Sender&gt;
+&lt;CompID&gt;AFUNDMGR&lt;/CompID&gt;
+&lt;/Sender&gt;
+&lt;Target&gt;
+&lt;CompID&gt;ABROKERR&lt;/CompID&gt;
+&lt;/Target&gt;
+&lt;/Header&gt;
+&lt;ApplicationMessage&gt;
+&lt;Order&gt;
+&lt;ClOrdID&gt;&lt;/ClOrdID&gt;
+&lt;HandlInst Value="1" /&gt;
+&lt;Instrument&gt;
+&lt;Symbol&gt;IBM&lt;/Symbol&gt;
+&lt;/Instrument&gt;
+&lt;Side Value="1" /&gt;
+&lt;TransactTime&gt;&lt;/TransactTime&gt;
+&lt;OrderQtyData&gt;
+&lt;OrderQty&gt;5000&lt;/OrderQty&gt;
+&lt;/OrderQtyData&gt;
+&lt;OrderType Value="2" /&gt;
+&lt;Price&gt;110.75&lt;/Price&gt;
+&lt;/Order&gt;
+&lt;/ApplicationMessage&gt;
+&lt;/FIXMLMessage&gt;
+&lt;/FIXML&gt;
+</pre>

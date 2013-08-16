@@ -1,0 +1,119 @@
+---
+layout: post
+title: .NET late binding
+date: '2005-01-25 08:10:00 -0500'
+mt_id: 903
+categories:
+- programming
+---
+<p>I am pretty sure I lifted this from a news group posting but I am not sure where.</p>
+
+<pre class="prettyprint">using System;
+using System.Reflection;
+using System.Runtime;
+using System.Runtime.InteropServices;
+namespace Adastra.General
+{
+  ///
+  /// Easy access to late-binding wrapper
+  ///
+  public class ComCreateObject
+  {
+    private Type comType;
+    private object comObject;
+    ///
+    /// Generate new class
+    ///
+    /// com object prog id
+    public ComCreateObject(string ProgID)
+    {
+      comType = Type.GetTypeFromProgID(ProgID);
+      if (comType == null)
+        throw new ArgumentException(
+          "Com ProgId not found",
+          "ProgId");
+      comObject = Activator.CreateInstance(comType);
+    }
+    ///
+    /// Execute late-bound method
+    ///
+    /// method name
+    /// parameters
+    ///
+    public object Execute(string method, 
+      params object[] parameters)
+    {
+      return comType.InvokeMember(method, 
+        BindingFlags.InvokeMethod, 
+        null, 
+        comObject, 
+        parameters);
+    }
+    public void ExecuteSet(string method,
+      object parameter)
+    {
+      ExecuteSet(method, new object[] { parameter });
+    }
+    ///
+    /// Execute late-bound property property-set
+    ///
+    /// property name
+    /// value
+    public void ExecuteSet(string propertyName,
+      params object[] parameters)
+    {
+      comType.InvokeMember(propertyName, 
+        BindingFlags.SetProperty, 
+        null, 
+        comObject, 
+        parameters);
+    }
+    ///
+    /// Execute late-bound property property-get
+    ///
+    /// property name
+    /// parameters
+    ///
+    public object ExecuteGet(string propertyName,
+      params object[] parameters)
+    {
+      return comType.InvokeMember(propertyName, 
+        BindingFlags.GetProperty, 
+        null, 
+        comObject, 
+        parameters);
+    }
+    ///
+    /// Execute late-bound property property-get
+    ///
+    /// property name
+    ///
+    public object ExecuteGet(string propertyName)
+    {
+      return comType.InvokeMember(propertyName, 
+        BindingFlags.GetProperty, 
+        null, 
+        comObject, 
+        null);
+    }
+    public void Dispose()
+    {
+      Marshal.ReleaseComObject(comObject);
+      comObject = null;
+    }
+  }
+}
+
+// Get type of the COM object xxxx
+Type objectType = Type.GetTypeFromProgID("xxxx");
+
+// Create instance of the COM object
+object comObject = Activator.CreateInstance( objectType);
+
+// Get the Count property
+int count = (int) objectType.InvokeMember(
+    "Count",
+    BindingFlags.GetProperty,
+    null,
+    comObject,
+    null);</pre>

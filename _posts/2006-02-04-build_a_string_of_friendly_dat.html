@@ -1,0 +1,30 @@
+---
+layout: post
+title: Build a string of "friendly" database errors
+date: '2006-02-04 12:30:00 -0500'
+mt_id: 784
+---
+<p>Build a string of "friendly" database errors</p>
+<pre class="prettyprint">
+Public Shared Function GetFriendlySqlErrorMessage(
+  ByVal ex As SqlClient.SqlException) As String
+  Dim sb As New Text.StringBuilder
+
+  For Each sqlError As SqlClient.SqlError In ex.Errors
+    Select Case sqlError.Number
+    Case 229, 230
+       sb.Append("You do not have sufficient permissions " &amp;
+         "to perform that action." &amp; 
+         Environment.NewLine)
+    Case 547
+        sb.Append("Please check your entries for valid data." &amp; 
+          Environment.NewLine)
+    Case 2627
+       sb.Append("Please make sure this is " &amp;
+         "not a duplicate record." &amp; 
+         Environment.NewLine)
+    End Select
+  Next
+
+  Return sb.ToString
+End Function</pre>

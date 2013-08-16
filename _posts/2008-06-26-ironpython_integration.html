@@ -1,0 +1,45 @@
+---
+layout: post
+title: IronPython integration
+date: '2008-06-26 17:54:41 -0400'
+mt_id: 1214
+categories:
+- programming
+---
+<pre class="prettyprint">using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
+using IronPython.Hosting;
+using IronPython.Runtime;
+
+namespace TabbedImages {
+
+    class TabbedImages {
+
+        [STAThread]
+        static void Main(string[] rawArgs) {
+            List<string> args = new List<string>(rawArgs);
+            args.Insert(0, Application.ExecutablePath);
+
+            string dir = Path.GetDirectoryName(Application.ExecutablePath);
+            PythonEngine engine = new PythonEngine();
+            engine.AddToPath(dir);
+            engine.Sys.argv = List.Make(args);
+
+            Dictionary&lt;string, object&gt; d = new Dictionary&lt;string, object&gt;();
+            EngineModule engineModule = engine.CreateModule("__main__", d, true);
+            engine.DefaultModule = engineModule;
+
+            string path = Path.Combine(dir, "main.py");
+            engine.ExecuteFile(path);
+        }
+    }
+}</pre>
+
+<ul>
+	<li>jmstall blog links [<a href="http://blogs.msdn.com/jmstall/archive/2005/08/31/Mdbg_Python_ext.aspx">1</a>, <a href="http://blogs.msdn.com/jmstall/articles/Sample_Mdbg_IronPython.aspx">2</a>, <a href="http://blogs.msdn.com/jmstall/archive/2005/09/01/Howto_embed_ironpython.aspx">3</a>]</li>
+	<li><a href="http://www.voidspace.org.uk/ironpython/ip_in_ip.shtml">voidspace.org.uk</a></li>
+	<li><a href="http://www.ironpython.info/index.php/Hosting_IronPython_2">ironpython.info</a></li>
+</ul>

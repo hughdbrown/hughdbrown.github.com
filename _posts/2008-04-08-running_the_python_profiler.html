@@ -1,0 +1,16 @@
+---
+layout: post
+title: Running the Python Profiler
+date: '2008-04-08 18:30:31 -0400'
+mt_id: 1142
+categories:
+- python
+- programming
+---
+<p>From Thomas Guest's <a href="http://wordaligned.org/articles/the-third-rule-of-program-optimisation"><em>The Third Rule of Program Optimisation</em></a></p>
+<pre class="prettyprint">$ python -m cProfile -o prof.dump program.py</pre>
+
+<p>You then load the prof.dump output file and analyse it using the pstats module. For example, to find which 10 functions took the most time:</p>
+<pre class="prettyprint">&gt;&gt;&gt; import pstats 
+&gt;&gt;&gt; prof = pstats.Stats("prof.dump") 
+&gt;&gt;&gt; prof.sort_stats("time").print_stats(10) </pre>

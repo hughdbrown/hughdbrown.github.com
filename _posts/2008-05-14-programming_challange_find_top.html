@@ -1,0 +1,36 @@
+---
+layout: post
+title: ! 'Programming challenge: find top values in unsorted array'
+date: '2008-05-14 12:23:28 -0400'
+mt_id: 1100
+categories:
+- programming
+---
+<p>Recently, I was given a programming problem for a pre-interview job screen.</p>
+
+<blockquote class="quote"><b>Implementation</b><br />
+<ul>
+<li>Create a class which implements either the C# or Java interface</li>
+<li>Implement the two methods defined in the interface. FindMaxValue should return the single highest integer. FindTopNValues should return a list of the highest 'n' values in the source list</li>
+<li>Any assumptions or design choices made during the implementation should be documented.</li>
+</ul>
+<b>C# interface</b><br />
+<pre class="prettyprint">namespace Test
+{
+   public interface IFindTopValues
+   {
+      int FindMaxValue(int[] values);
+      int[] FindTopNValue(int[] values, int count);
+   }
+}
+</pre>
+<b>Test cases</b><br />
+<ul>
+<li>Describe the test cases which you would implement for this class.</li>
+</ul>
+</blockquote>
+<p>Here's <a href="/files/programming-challenge-find-top.html">the solution</a> I produced. It uses a C# generic PriorityQueue class. Have a look -- it's useful, reusable code.</p>
+
+<br /><hr /><br />
+
+<p>Update (2008-05-15): I noticed that Julian Bucknall had a <a href="http://www.boyet.com/Articles/PriorityQueueLimited.html">change to his priority queue</a> that ordered entries by priority and time of entry. I decided to <a href="/files/better-priorityqueue.html">update my code</a> to provide the same ability.</p>

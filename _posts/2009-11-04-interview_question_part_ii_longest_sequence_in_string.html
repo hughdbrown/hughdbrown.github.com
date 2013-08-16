@@ -1,0 +1,39 @@
+---
+layout: post
+title: ! 'Interview question, part II: longest sequence in string'
+date: '2009-11-04 16:58:22 -0500'
+mt_id: 1566
+published: false
+categories:
+- programming
+- python
+---
+<p>I think a better algorithm is to find the first run and then to continue the search that many characters to the right. If you've found a run of 6 characters, say, you don't have to look from characters 0 to 5 past the end of the run -- you can start 6 characters past and search left and right for a run of 7 or more. The longer the run you have already found, the faster the algorithm is on the balance because it has to do fewer searches.</p>
+
+<p>This is basic Boyer-Moore/KMP type searching. Too bad I did not think of this in the interview.</p>
+
+<pre class="prettyprint">
+def search_longest_substring(s):
+    def find_left(s, midc, mid, left):
+        for j in range(mid-1, left-1, -1):
+            if s[j] != midc:
+                return j + 1
+        return left
+    def find_right(s, midc, mid, right):
+        for k in range(mid+1, right):
+            if s[k] != midc:
+                return k
+        return right
+    i, longest = 0, (0, '')
+    while i < len(s):
+        c = s[i]
+        j = find_left(s, c, i, i-longest[0])
+        k = find_right(s, c, i, len(s))
+        if k-j > longest[0]:
+            longest = (k-j, c)
+        i = k + longest[0]
+    return longest
+
+if __name__ == '__main__':
+    print search_longest_substring("AABBBBCBBBBACCDDDDDDAAABBBBCBBBBACCDDDDDDDAAABBBBCBBBBACCDDDDDDA")
+</pre>

@@ -1,0 +1,86 @@
+---
+layout: post
+title: ! 'Interview question: longest sequence in string'
+date: '2009-11-04 16:04:33 -0500'
+mt_id: 1565
+published: false
+categories:
+- programming
+- python
+---
+<p>I had an interesting question in a phone interview today: find the longest consecutive sequence of a letter in a string. So if your data is <em>AABBBA</em>, the longest sequence is the three B's. I came up with a brute force algorithm that runs in O(n) time: split the string into an array of strings, each string filled with identical characters. Then iterate over the array and return the character and length of the longest.</p>
+
+<p>But of course this requires extra memory and the problem does not, so the interviewer encouraged me to find another solution. I thought this sounded a lot like the maximum subsequence problem, so I sketched out <a href="http://wordaligned.org/articles/the-maximum-subsequence-problem">this algorithm</a> that I covered in a <a href="http://www.iwebthereforeiam.com/iwebthereforeiam/2008/04/maximum-subsequence.html">blog article in 2008</a>.</p>
+
+<p>But when I was done the interview, I was not satisfied. Of course I can't do better than O(n), but what if I found the algorithm with the lowest multiplier? I zeroed in on a divide-and-conquer algorithm:</p>
+<ol>
+<li>Find the midpoint of the string</li>
+<li>Search left and right for the start and end of the consecutive sequence</li>
+<li>If the left unsearched string is at least as long as the longest string found, search it</li>
+<li>If the right unsearched string is at least as long as the longest string found, search it</li>
+<li>Return the length and character of the longest run in the left, middle, and right strings</li>
+</ol>
+
+<p>And that would look like this:</p>
+<pre class="prettyprint">
+def longest_substring(s, min_length):
+    def find_left(s, midc, mid):
+        for j in range(mid-1, -1, -1):
+            if s[j] != midc:
+                return j + 1
+        return j
+    def find_right(s, midc, mid):
+        for k in range(mid+1, len(s)):
+            if s[k] != midc:
+                return k
+        return len(s)
+    mid = len(s) // 2
+    midc = s[mid]
+    j = find_left(s, midc, mid)
+    k = find_right(s, midc, mid)
+    left, middle, right = s[:j], s[j:k], s[k:]
+    #print left, middle, right
+    b = (len(middle), midc)
+    min_length = max(min_length, b[0])
+    a = longest_substring(left, min_length) if len(left) > min_length else None
+    c = longest_substring(right, min_length) if len(right) > min_length else None
+    return max([a, b, c])
+
+def search_longest_substring(s):
+    return longest_substring(s, 0)
+
+if __name__ == '__main__':
+    print search_longest_substring("AABCBBBBACCDDDDDDA")
+</pre>
+
+<p>Obviously, this could be improved upon so as not to take an extra copy of the string by copying left, middle, and right: the code could pass in the left and right indexes into the string and operate based on the indexes. And then it would look like this:</p>
+
+<pre class="prettyprint">
+def longest_substring(s, left, right, min_length):
+    def find_left(s, midc, mid, left):
+        for j in range(mid-1, left-1, -1):
+            if s[j] != midc:
+                return j + 1
+        return left-1
+    def find_right(s, midc, mid, right):
+        for k in range(mid+1, right):
+            if s[k] != midc:
+                return k
+        return right
+    mid = left + (right - left) // 2
+    midc = s[mid]
+    j = find_left(s, midc, mid, left)
+    k = find_right(s, midc, mid, right)
+    #print s[left:j], s[j:k], s[k:right]
+    b = (k-j, midc)
+    min_length = max(min_length, b[0])
+    a = longest_substring(s, left, j, min_length) if (j-left) > min_length else None
+    c = longest_substring(s, k, right, min_length) if (right-k) > min_length else None
+    return max([a, b, c])
+
+def search_longest_substring(s):
+    return longest_substring(s, 0, len(s), 0)
+
+if __name__ == '__main__':
+    print search_longest_substring("AABBBBCBBBBACCDDDDDDAAABBBBCBBBBACCDDDDDDDAAABBBBCBBBBACCDDDDDDA")
+</pre>

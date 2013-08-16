@@ -1,0 +1,64 @@
+---
+layout: post
+title: Setting software priorities
+date: '2005-10-12 11:36:00 -0400'
+mt_id: 837
+---
+<h1>[<a href="http://www.joelonsoftware.com/articles/SetYourPriorities.html">Joel on setting software priorities</a>]</h1>
+
+<blockquote class="quote">
+<p>Anyway, back on the topic of choosing features for FogBugz 5.0. Here's how we got our initial prioritization.</p>
+
+<p>First, I took a stack of 5x8 cards, and wrote a feature on each one. Then I called the team together. In my experience this works with up to about twenty people, and it's a good idea to get as many different perspectives in the room: programmers, designers, people who talk to customers, sales, management, documentation writers and testers, even (!) customers.</p>
+
+<p>I asked everyone to bring their own list of feature ideas to the meeting, too. The first part of the meeting was going over each feature very, very quickly and making sure we had a very, very rough common understanding of what the feature was, and that each feature had a card.</p>
+
+<p>At this stage, the idea was not to debate any feature on its merits, or to design the feature, or even to discuss the feature: just to have a vague, rough idea of what it was. Some of the features for FogBugz 5.0 were things like</p>
+
+<ul>
+	<li>Personalizable Home Page</li>
+	<li>Painless Software Schedules</li>
+	<li>Track Billable Time</li>
+	<li>Fork a bug</li>
+	<li>(46 others...)</li>
+</ul>
+<p>Very vague stuff. Remember we didn't need to know at this point how each feature would be implemented, or what it involved, because our only goal was getting a rough prioritization that could be used as the basis to start development. This got us a list of about 50 big features.</p>
+
+<p>In part two, we went through all of the features and everybody voted on each feature: just a quick "thumbs up" or "thumbs down." No discussion, no nothing: just a real quick thumbs up or thumbs down on each feature. This revealed that about 14 of the feature ideas didn't have much support. I threw out all the features that only got one or two votes, leaving us with 36 potential features.</p>
+
+<p>Unrelated Generic PhotographNext we assigned costs for each of these features, on a scale of 1 to 10, where 1 was a quicky feature and 10 was a big monster feature. Here it's important to remember that the goal was not to schedule the features: just to separate the tiny features from the medium features from the huge features. I just went through each of the features and asked the developers to call out "small," "medium," or "large." Even without knowing how long a feature is going to take, it's easy to see that forking a bug is a "small" feature while the big, vague "Personalizable Home Page" feature was large. Based on the consensus estimate of costs and my own judgment, we put down prices on all the features:</p>
+
+<img src="http://www.joelonsoftware.com/pictures/pri1.png" />
+
+<p>Once again, it's really messy, it's not exact, and it doesn't matter. You're not making a schedule today: you're just prioritizing. The only thing that you have to get approximately right is the vague idea that you could do two medium features or one large feature or ten small features in about the same amount of time. It doesn't have to be accurate.</p>
+
+<p>The next step was making a menu of all thirty proposed features and their "costs". Everybody on the team got a copy of the menu and was given $50 to play with. They could allocate their money any way they wanted, but they only had $50 to spend. They could buy half-features, if they wanted, or buy double features. Someone who really liked that Track Billable Time feature could spend $10 or $15 on it; someone who liked it a little might only spend $1 and hope that enough other people funded it.</p>
+
+<p>Next, we added up how much everyone spent on each feature:</p>
+
+<img src="http://www.joelonsoftware.com/pictures/pri2.png" />
+
+<p>Finally I divided the amount spent by the cost:</p>
+
+<img src="http://www.joelonsoftware.com/pictures/pri3.png" />
+
+<p>And then sorted by this number to find the most popular features:</p>
+
+<img src="http://www.joelonsoftware.com/pictures/pri4.png" />
+
+<p>Ta da! A list of all the features you might want to do, in rough order of everyone's best idea of which features are the most important.</p>
+
+<p>And now you can start to refine. For example, you can clump together features that naturally belong together, for example, doing software schedules makes billable time easier, so maybe we should either do both or neither. And sometimes looking down the prioritized list it's just real obvious that something is messed up. So, you change it! Nothing is carved in stone. You can even change the prioritization as you go through development.</p>
+
+<p>But what surprised me the most is that the final list we produced was really a very good prioritization for FogBugz 5.0, and really did reflect our collective consensus about the relative priorities of various features.</p>
+
+<p>Priority list in hand, we set out to more or less work down the list in order until about March, when we plan to stop adding new features and start the integration and testing phase. We'll write specs for each (nonobvious) feature right before implementing that feature.</p>
+
+<p>(The nattering scorekeepers of the BDUF/Agile beauty contest are now thoroughly confused. "Was that a vote for BDUF? Or Agile? What does he want? Can't he just take sides for once?!")</p>
+
+<p>The whole planning process took three hours.</p>
+
+<p>If you're lucky enough to have the ability to release software more frequently than we do, (see Picking a Ship Date), you still need to work down the list in order, but you can just stop and do releases more often. The good thing about frequent releases is that you can reprioritize the list regularly based on actual customer feedback, but not every product has this luxury.</p>
+
+<p>Mike Conte taught me this system during the planning of Excel 5, where it only took a couple of hours even with a couple of dozen people in a conference room. The cool thing was that the roughly 50% of the features that we didn't have time to do were really stupid features, and Excel was better because it didn't have them.</p>
+</blockquote>

@@ -1,0 +1,12 @@
+---
+layout: post
+title: Steps to improve WinForms redraw
+date: '2004-05-07 03:39:00 -0400'
+mt_id: 1072
+---
+<p>Steps to improve WinForms redraw</p>
+<pre class="prettyprint">
+// Set these in the constructor
+SetStyle(ControlStyles.UserPaint, true);
+SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+SetStyle(ControlStyles.DoubleBuffer, true);</pre>

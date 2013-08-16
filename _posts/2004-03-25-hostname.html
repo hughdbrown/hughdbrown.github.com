@@ -1,0 +1,86 @@
+---
+layout: post
+title: hostname
+date: '2004-03-25 01:42:00 -0500'
+mt_id: 1018
+---
+<p>Writing hostname in C#</p>
+<pre class="prettyprint">static void Main(string[] args)
+{
+	String s = System.Net.Dns.GetHostName ();
+	Console.WriteLine (s);
+}</pre>
+
+<p>COM ATL header I use:</p>
+<pre class="prettyprint">
+//&gt;&gt;&gt; These are required for creating 
+// com components, CComPtr, CComBSTR,
+CComPtr and CComQIPtr.
+#include <atlbase.h>
+extern CComModule _Module;
+#include <atlcom.h>
+#include <initguid.h>
+#include <comdef.h>
+//&lt;&lt;&lt;
+
+#import "msxml.dll" \
+			rename_namespace( "MSXML" ) \
+			named_guids no_implementation \
+			raw_interfaces_only \
+			raw_native_types
+using namespace MSXML;
+</pre>
+	
+<p>Some sort of javascript for loading XML and applying an XSL style.</p>
+<pre class="prettyprint">
+&lt;title&gt;Test of XML/XSL&lt;/title&gt;
+&lt;script language="jscript"&gt;
+function setInnerHTML ()
+{
+	var XMLDoc = new ActiveXObject('Microsoft.XMLDOM');
+	XMLDoc.async = false;
+	XMLDoc.load ('av.xml');
+	var XSLDoc = new ActiveXObject('Microsoft.XMLDOM');
+	XSLDoc.async = false;
+	XSLDoc.load ('av.xsl');
+
+	var result;
+	try
+	{
+		var doc = XSLDoc.documentElement;
+		result = XMLDoc
+			.documentElement.transformNode(doc);
+	}
+	catch (err)
+	{
+		window.alert (err.description);
+	}
+	//window.alert (result);
+	insertHTML.innerHTML = result;
+}
+&lt;/script&gt;
+&lt;div id="insertHTML"&gt;&lt;/div&gt;
+</pre>
+	
+<p>C# code to get .config settings into in-memory data structure.</p>
+<pre class="prettyprint">
+// Gather .config settings
+NameValueCollection settings = 
+    ConfigurationSettings.AppSettings;
+string              user = settings["user"];
+string              password = settings["password"];
+string              nickname = settings["nickname"];
+</pre>
+
+<p>The matching XML data</p>
+<pre class="prettyprint">
+&lt;configuration&gt;
+    &lt;appsettings&gt;
+        &lt;add key="user" value="user@server.com"&gt;
+        &lt;add key="password" value="password"&gt;
+        &lt;add key="nickname" value="Sells Brothers IM client"&gt;
+    &lt;/add&gt;
+&lt;/add&gt;
+</pre>
+
+<p>[<a href="http://diveintomark.org/archives/2004/02/04/incompatible-rss">RSS incompatibilities</a>]</p>

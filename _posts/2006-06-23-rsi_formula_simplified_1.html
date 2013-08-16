@@ -1,0 +1,23 @@
+---
+layout: post
+title: RSI formula simplified
+date: '2006-06-23 05:49:00 -0400'
+mt_id: 533
+categories:
+- trading
+---
+<p>I've seen the RSI formula many times but never seen this algebraic simplification that makes the measure intuitive.<p>
+
+<pre class="prettyprint">Substitute y = U / D
+ 
+RSI = 100 - [100 / [ 1 + y] ]
+RSI = 100 * [1 - 1 / [ 1 + y] ] (factor out 100)
+RSI = 100 * [1 + y - 1] / [ 1 + y] (common denom of <em>1 + y</em>)
+RSI = 100 * y / [ 1 + y] (reduce)
+RSI = 100 * [U / D] / [ 1 + U / D] (substitute y)
+RSI = 100 * [U / D] / [ [D + U] / D] (common denom)
+RSI = 100 * U / [D + U] (elim div by <em>D</em>)</pre>
+
+<p><a href="http://www.esignallearning.com/education/resources/atoz/rsi.asp">esignallearning.com</a> comments on this:</p>
+<blockquote class="quote">The RSI is a fairly simple formula, but is difficult to explain without pages of examples.</blockquote>
+<p>Clearly this is not so. RSI is the ratio of up-moves to the sum of all moves scaled onto the range 0 to 100. That's really simple to explain.</p>

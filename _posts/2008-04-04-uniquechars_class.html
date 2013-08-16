@@ -1,0 +1,52 @@
+---
+layout: post
+title: UniqueChars class
+date: '2008-04-04 08:59:00 -0400'
+mt_id: 26
+---
+<p>Adapted from [<a href="http://research.swtch.com/2008/03/using-uninitialized-memory-for-fun-and.html">research!rsc</a>]</p>
+
+<pre class="prettyprint">public class UniqueChars&lt;T&gt;
+{
+	private int n;
+	private T dense[((unsigned long)((T)-1)) + 1];
+	private T sparse[((unsigned long)((T)-1)) + 1];
+
+	public UniqueChars() { clearSet(); }
+	public void clearSet() { n = 0; }
+
+	public void addMember(T val)
+	{
+		dense[n] = val;
+		sparse[val] = n++;
+	}
+	public isMember(T val)
+	{
+		const T index = sparse[val];
+		return index &lt; n &amp;&amp; dense[index] == val;
+	}
+	public void removeMember(T val)
+	{
+		if (isMember(val))
+		{
+			const T old_val = dense[--n];
+			const T new_index = sparse[val]
+			dense[new_index] = old_val;
+			sparse[old_val] = new_index;
+		}
+	}
+};
+
+void findUniqueChars(const unsigned char *str)
+{
+	UniqueChars&lt;unsigned char&gt; s;
+	unsigned char c;
+	while (0 != (c = *str++))
+	{
+		if (! s.isMember(c))
+		{
+			s.addMember(c);
+			putc (c, stdout);
+		}
+	}
+}</pre>
