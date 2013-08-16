@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Github subtree merge</title>
+    
+    <meta name="author" content="Hugh Brown">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Jekyll Bootstrap</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Github subtree merge </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>03 December 2009</span>
+    </div>
+    <div class="content">
+      <p>I had a GIT problem on GitHub. I had projects in a directory hierarchy like this:</p>
+<pre><blockquote class="prettyprint">    root/src/lang1/project1
+    root/src/lang1/project2
+    root/src/lang1/project3
+    ...</blockquote></pre>
+<p>that were in Git locally. Each was a separate Git repository. I then tried to (1) move the source to GitHub and (2) add other projects that were at the same level or higher:</p>
+<pre><blockquote class="prettyprint">    root/src/lang2/project-x
+    root/src/lang3/project-y
+    root/release/...
+    root/docs/...
+    ...</blockquote></pre>
+<p>And Git took my intentions the wrong way. Instead of a single hierarchical repository from root/ down, I then had all of the stuff in root/ down except the lang1/ directories were all islands which GitHub thought of as submodules. Except not quite. These projects did not display with subfolders -- they displayed with the submodule icon, but I couldn't get the source from GitHub via them.</p>
+
+<p>The fix was quite easy once I'd contacted tech support at github and exchanged email with Tekkub. He recommended this <a href="http://help.github.com/subtree-merge/">URL</a> for a description of how to merge a subtree. I ended up with a script like this:</p>
+<pre><blockquote class="prettyprint"># Put repository at
+#    ../temp/DazUtility/DazUtilitySetup
+# into subtree at
+#     vb.net/DazUtility/DazUtilitySetup
+git remote add -f A ../temp/DazUtility/DazUtilitySetup
+git merge -s ours --no-commit A/master
+git read-tree --prefix=vb.net/DazUtility/DazUtilitySetup A/master
+git commit -m "Merge with DazUtilitySetup"
+git push
+git remote rm A</blockquote></pre>
+
+<p>Using the <em>ours</em> strategy for the merge did not work with all my projects and I ended up using <em>resolve</em> in one case:</p>
+<pre><blockquote class="prettyprint">git merge -s resolve --no-commit A/master</blockquote></pre>
+
+<p>One final word: tech support at Github is awesome: fast and knowledgeable with great follow-up.</p>
+
+    </div>
+
+    
+
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2009/12/02/i_am_not_much_into_reading" title="I am not much into reading...">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/2009/12/08/comment_captcha_compromised_on_movable_type_and_wordpress" title="Comment CAPTCHA compromised on Movable Type and WordPress?">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2013 Hugh Brown
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

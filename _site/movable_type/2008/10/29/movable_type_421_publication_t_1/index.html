@@ -1,0 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Movable Type 4.21: publication time comes to a standstill</title>
+    
+    <meta name="author" content="Hugh Brown">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Jekyll Bootstrap</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Movable Type 4.21: publication time comes to a standstill </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>29 October 2008</span>
+    </div>
+    <div class="content">
+      <p>I upgraded to 4.21 from 4.1 in the past day. I have tried to republish my weblog with a new style, but the republish times are horrific (1400 entries across 4 years):</p>
+<ul>
+	<li>??? seconds for <a href="/images/MovableType/Entry.png">entry</a> (ran for about 80 minutes before stalling on the completion screen)</li>
+	<li>2353 seconds for <a href="/images/MovableType/AuthorMonthly.png">author monthly</a></li>
+	<li>1335 seconds for <a href="/images/MovableType/CategoryMonthly.png">category monthly</a></li>
+	<li>843 seconds for <a href="/images/MovableType/Monthly.png">monthly</a></li>
+	<li>161 seconds for <a href="/images/MovableType/Category.png">category archives</a></li>
+	<li>73 seconds for <a href="/images/MovableType/IndexTemplates.png">index templates</a></li>
+	<li>16 seconds for <a href="/images/MovableType/Page.png">page</a></li>
+</ul>
+<p>That's 80 minutes without entries. For comparison, it used to take only 15 to 20 minutes to republish the entire site before.</p>
+
+<p>I've looked at the phpmyadmin system variables for MySQL and they are consistent with large numbers of slow queries, probably caused by table scans due to missing indexes in searches:</p>
+<ul>
+	<li>Slow_queries has crept up from 526k to 574k slow queries.</li>
+	<li>Handler_read_rnd from 4641k to 5341k</li>
+	<li>Handler_read_rnd_next from 955M to 1116M</li>
+	<li>Select_full_join from 9373 to 10k</li>
+</ul>
+
+<p>However, my weblog is hosted (on Windows under IIS6, no less) and I don't have access to any raw MySQL logs. I can't run MySQL from a command prompt. I have no way of telling which queries are causing the slow down. Also, I cannot upgrade the perl version.</p>
+
+<p>Ideas for discovering the problem:</p>
+<ul>
+	<li>instrument the perl code to record SQL queries & time to execute<br />
+...except I don't know what perl code executes the SQL queries. Plus, the code goes directly to the DBI/DBD perl module to execute SQL. It would mean patching the code in a zillion places.</li>
+	<li>add indexes to MT tables in MySQL<br />
+But indexes on which columns of which tables?</li>
+	<li>add foreign keys to MT tables in MySQL<br />
+Again: where?</li>
+</ul>
+
+<p>Anyone with an idea is welcome to leave a comment.</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#movable_type-ref">
+    		movable_type <span>11</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2008/10/29/fairfield_westchester_code_cam" title="Fairfield / Westchester Code Camp">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/movable_type/2008/10/30/movable_type_421_publication_s" title="Movable Type 4.21 publication slow">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2013 Hugh Brown
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

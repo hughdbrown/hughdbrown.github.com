@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Pretty code</title>
+    
+    <meta name="author" content="Hugh Brown">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Jekyll Bootstrap</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Pretty code </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>29 May 2008</span>
+    </div>
+    <div class="content">
+      <p>Thanks to several google-translated Japanese Movable Type blog entries 
+[<a href="http://blog.makotokw.com/2007/10/27/movable_type_4googlecodepretti/l">makotokw</a>, 
+<a href="http://kazuno.biz/2007/05/googlecodeprettify_fizzbuzz.html">kazuno</a>, and 
+<a href="http://tadateto.net/2007/09/23/0412.html">tadateto</a>], 
+I've finally figured out how to hack MT to get python code pretty-printed. (To read these Japanese articles, I recommend searching using google and then pressing <em>Translate this page</em>.) The code is downloaded from 
+<a href="http://code.google.com/p/google-code-prettify/">google</a> 
+and the original idea was from 
+<a href="http://wordaligned.org/">Thomas Guest</a>.</p>
+
+<p>To get this to work, you have to do four things:</p>
+<ol>
+	<li>Add google's prettify.css stylesheet to your header page template<br />
+<pre class="prettyprint">&lt;link rel="stylesheet" href="/mt-static/css/prettify.css" type="text/css" /&gt;</pre></li>
+	<li>Add google's prettify.js JavaScript to you header page template<br />
+<pre class="prettyprint">&lt;script type="text/javascript" src="/mt-static/js/prettify.js"&gt; &lt;/script&gt;</pre></li>
+	<li>Get your body.onload to call prettyPrint()<br />
+<pre class="prettyprint">&lt;body class="mt-main-index layout-wtt" onload="prettyPrint();"&gt;</pre></li>
+	<li>Mark the sections that you want pretty-printed<br />
+<pre class="prettyprint">&lt;pre class="prettyprint"&gt;</pre></li>
+</ol>
+
+<p>The third step is the most involved. You have to change three templates:</p>
+<ol>
+	<li>Page<br />
+<pre class="prettyprint"><strong>&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;prettyPrint();&quot;&gt;</strong>
+&lt;MTIfCommentsAccepted&gt;
+    &lt;$MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>individualArchivesOnLoad(commenter_name)&quot;$&gt;
+&lt;/MTIfCommentsAccepted&gt;</pre></li>
+	<li>Entry<br />
+<pre class="prettyprint"><strong>&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;prettyPrint();&quot;&gt;</strong>
+&lt;MTIfCommentsAccepted&gt;&lt;
+    $MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>individualArchivesOnLoad(commenter_name)&quot;$&gt;
+&lt;/MTIfCommentsAccepted&gt;
+</pre></li>
+	<li>Comment Preview<br />
+<pre class="prettyprint">&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>individualArchivesOnLoad(commenter_name)&quot;&gt;
+</pre></li>
+</ol>
+
+<br /><hr /><br />
+<p>2008-06-27: Did I say three templates? I meant five. Here are two more templates to change:</p>
+<ol>
+	<li>Search results<br />
+<pre class="prettyprint">&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>&quot;&gt;
+</pre></li>
+	<li>Archive index<br />
+<pre class="prettyprint">&lt;MTSetVar name=&quot;body_onload&quot; value=&quot;<strong>prettyPrint();</strong>&quot;&gt;
+</pre></li>
+</ol>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#movable_type-ref">
+    		movable_type <span>11</span>
+    	</a></li>
+     
+    	<li><a href="/categories.html#programming-ref">
+    		programming <span>90</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/website/2008/05/28/refdesk" title="RefDesk">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/2008/05/29/the_lottery_project" title="The lottery project">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2013 Hugh Brown
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

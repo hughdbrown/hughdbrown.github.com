@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Open source components</title>
+    
+    <meta name="author" content="Hugh Brown">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Jekyll Bootstrap</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Open source components </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>10 July 2009</span>
+    </div>
+    <div class="content">
+      <p>Last week, I went to a django presentation at <a href="http://www.hugeinc.com/">HUGE Inc. in Brooklyn</a>. For me, the highlight was <a href="http://www.montylounge.com">Kevin Fricovsky's</a> five minute (well, ten minute) lightning talk in which he demonstrated the power of using open source components. He took a fairly small blog project of his and pulled it down from github.com. Then he used <a href="http://pypi.python.org/pypi/pip">pip</a> to get the dependencies listed in the requirements.txt file. Inside of ten minutes, he had a working blog that used five to ten open source components.</p>
+
+<p>In contrast to this, I got a big reality check on using open source code. I wanted to try out some of <a href="http://stevesouders.com/">Steve Souders's ideas on improving website performance</a> on a django open source project that is already running. I forked some code from github and was going to apply <a href="http://github.com/mintchaos/django_compressor/tree/master">django-compressor</a> to the CSS and JS to see the performance improvement. I never got to this point.</p>
+
+<p>The project was missing a couple of important pieces:</p>
+<ul>
+	<li>a list of the requirements and how to obtain them</li>
+	<li>the settings.py file to list the installed apps</li>
+</ul>
+<p>Without these, I was pretty much dead. I soldiered on, though, and found eight required components to add, but:</p>
+<ul>
+	<li>one of the components did not work with python 2.5 at head rev</li>
+	<li>I got a subtle templetags error message that I eventually realized meant that I had a wrong similarly-named open source component</li>
+</ul>
+
+<p>I've written to the project author to find out where to get the correct component.
+It's a bracing counterpoint to the presentation. Taking your own code and adding components -- likely to work. Taking a project in an unknown state and trying to back out what the components are -- much more likely to fail.</p>
+
+<p>By the way, if you get a <a href="http://code.djangoproject.com/ticket/3349">message like this</a>:</p>
+<blockquote class="quote">
+'XXX' is not a valid tag library: Could not load template library from django.templatetags.XXX, No module named models</blockquote>
+<p>then I have a technique for you. Assuming that templatetags module XXX has a ton of import statements in its files, you have to figure out which file it is importing that is causing the failure. Take code like this:</p>
+<pre class="prettyprint">
+from django import template
+from django.conf import settings
+from django.core import template_loader
+from django.db import models
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ObjectDoesNotExist
+from django.utils.safestring import mark_safe
+from syncr.twitter.models import Tweet
+from syncr.delicious.models import Bookmark
+from syncr.flickr.models import Photo
+from tagging.templatetags import tagging_tags
+from tumblr.models import TumblrPost
+from lastfm.models import LastfmPost
+import re
+import datetime
+</pre>
+
+<p>and turn it into this:</p>
+<pre class="prettyprint">
+try:
+    from django import template
+    from django.conf import settings
+    from django.core import template_loader
+    from django.db import models
+    from django.contrib.contenttypes.models import ContentType
+    from django.core.exceptions import ObjectDoesNotExist
+    from django.utils.safestring import mark_safe
+except ImportError, exc:
+    print "django error in %s: %s" % (__file__, exc)
+
+try:
+    from syncr.twitter.models import Tweet
+    from syncr.delicious.models import Bookmark
+    from syncr.flickr.models import Photo
+    from tagging.templatetags import tagging_tags
+    from tumblr.models import TumblrPost
+    from lastfm.models import LastfmPost
+except ImportError, exc:
+    print "package error in %s: %s" % (__file__, exc)
+
+try:
+    import re
+    import datetime
+except ImportError, exc:
+    print "python error in %s: %s" % (__file__, exc)
+</pre>
+<p>Do this for every file in the module. Run the dev server and watch for the import error location reported. Once you know which block is failing in which file, add print statements to see which particular import you get to before it fails. Then you'll know which import is not working. In my case, this showed me that I had used the wrong open source tumblr module for this project.</p>
+
+<p><a href="http://www.b-list.org/weblog/2007/dec/04/magic-tags/">James Bennett</a> has some more detailed observations on this point, too.</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#programming-ref">
+    		programming <span>90</span>
+    	</a></li>
+     
+    	<li><a href="/categories.html#python-ref">
+    		python <span>34</span>
+    	</a></li>
+     
+    	<li><a href="/categories.html#django-ref">
+    		django <span>4</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/django/books/programming/python/2009/07/08/recent_reading" title="Recent reading">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/programming/net/2009/07/16/c_and_const_correctness" title="C# and const correctness">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2013 Hugh Brown
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+

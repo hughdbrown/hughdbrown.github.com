@@ -1,0 +1,275 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Moved to hostmysite.com</title>
+    
+    <meta name="author" content="Hugh Brown">
+
+    <!-- Enable responsive viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/themes/twitter/bootstrap/css/bootstrap.2.2.2.min.css" rel="stylesheet">
+    <link href="/assets/themes/twitter/css/style.css?body=1" rel="stylesheet" type="text/css" media="all">
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+
+    <!-- atom & rss feed -->
+    <link href="/atom.xml" type="application/atom+xml" rel="alternate" title="Sitewide ATOM Feed">
+    <link href="/rss.xml" type="application/rss+xml" rel="alternate" title="Sitewide RSS Feed">
+
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container-narrow">
+          <a class="brand" href="/">Jekyll Bootstrap</a>
+          <ul class="nav">
+            
+            
+            
+
+
+  
+    
+      
+      	
+      	<li><a href="/tags.html">Tags</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/archive.html">Archive</a></li>
+      	
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/categories.html">Categories</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+      	
+      	<li><a href="/pages.html">Pages</a></li>
+      	
+      
+    
+  
+    
+      
+    
+  
+    
+      
+    
+  
+
+
+
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-narrow">
+
+      <div class="content">
+        
+<div class="page-header">
+  <h1>Moved to hostmysite.com </h1>
+</div>
+
+<div class="row-fluid post-full">
+  <div class="span12">
+    <div class="date">
+      <span>09 January 2009</span>
+    </div>
+    <div class="content">
+      <p>So if you are reading this, then you have been successfully redirected to my new website on hostmysite.com. Congratulations!</p>
+
+<p>The whole adventure was not without some complications and extra steps. Partly, it was the change of internet host. In addition, I was changing from Movable Type 4.21 to MT 4.23, from Microsoft IIS to Apache, and from Windows to Linux. All of these factors contributed.</p>
+<ul>
+	<li>mt-config.cgi
+<p>A lot of the problems flowed from the new mt-config.cgi file. Every Movable Type site has a mt-config.cgi file which describes where the CGI/Perl files can be found, where the generated static HTML files should go, and what the IP/URL of the website is. I was previously using MT under Microsoft IIS, and it allowed certain configuration errors that will haunt me.</p>
+<p>MT is designed to allow multiple blogs to share a single domain. Typically, your blog is rooted at http://www.domain.com/blogname/index.html. In my case, I had mine rooted at http://www.domain.com/index.html because I put the MT code and generated files into a directory hierarchy that omitted the blog name. Unfortunately, that is really not possible in a typical Linux installation, as far as I can tell.</p>
+<p>Linux sites set up (interpreted, executable) CGI files under /cgi-bin/ and (static, uninterpreted) HTML files under /htdocs/. Thus, you end up with your mt-static directory moved under htdocs and everything else put under cgi-bin.</p>
+<p>Everything would still be cool if either:<ol>
+	<li>I omitted the directory with the blog name (putting everything in the htdocs root) or</li>
+	<li>I could find a way to configure mt-config.cgi to redirect to index.html without the blog name.</li>
+</ol> Neither seemed desirable, so I now have iwebthereforeiam stuck between my domain and all pages.</p></li>
+
+	<li>Hard-coded iwebthereforeiam.com / missing blog name
+<p>Because of the change above, I could not have internal links that omitted the blog name. At a minimum, I had to change all these internal links. All of them used my domain name, so for simplicity, I just replaced the domain name with <strong>../..</strong>. That will work even if I someday discover a simple way to omit the blog name from URLs.</p></li>
+
+	<li>Move static HTML/ASP files
+<p>Because of laziness, I had placed many files into the root of my configuration. In most cases, it was easier to just put them into a new directory /htdocs/files/. In like fashion, I ended up adding some other directories to the root so that I did not go insane patching my entire site:</p>
+<ul>
+	<li>/files/</li>
+	<li>/images/</li>
+	<li>/projects/</li>
+	<li>/sounds/</li>
+	<li>/styles/</li>
+</ul>
+</li>
+
+	<li>Fix Movable Type templates
+<p>I have a bunch of CSS and JavaScript packages on my site that have to be added to parts of the MT templates in order to flow through directly:</p>
+<ul>
+	<li>google-analytics</li>
+	<li>code coloring with prettify.js and prettify.css</li>
+	<li>snapshots from snap.com</li>
+	<li>blockquote.quote</li>
+</ul>
+<p>I would have followed the instructions I posted some months ago for this, but MT 4.23 has removed some templates and added others, so I ended up figuring it out from scratch again. The gist of it is that anywhere that MT generates a <em>head</em> section, I needed to include the CSS and JS files, and anywhere that MT generates a <em>body</em> section, I needed to add an <em>onload</em> setting. The color coding involved adding the CSS and JavaScript inclusions to HTML Head:</p>
+
+<pre class="prettyprint lang-html">
+&lt;link rel="stylesheet" href="/mt-static/css/prettify.css" type="text/css" /&gt;
+&lt;script type="text/javascript" src="/mt-static/js/prettify.js"&gt; &lt;/script&gt;
+</pre>
+
+<p>and then adding <em>onload="prettyPrint();"</em> to the body element of these templates:
+</p>
+<ul>
+	<li>Search results</li>
+	<li>Comment Preview</li>
+	<li>Category Entry Listing</li>
+	<li>Entry</li>
+	<li>Monthly Entry Listing</li>
+	<li>Page</li>
+</ul>
+<p>Setting up google analytics and snap.com involved making modifications to the bottom of the template <em>Banner Footer</em>. I still have not got blockquote.quote in extra.css working.</p>
+</li>
+
+	<li>Add banned sites using mt_ipbanlist
+<p>I have a huge collection of banned spammers from my previous site. I was not going to let them start spamming my trackbacks again, so I have to insert all these IP addresses into the MySQL table mt_ipbanlist. This will be a bit of a pain. I'll probably write a python script that does the insertions and upload the script to MySQL and let it chew on that for awhile. I imagine that must be how I did it before.</p></li>
+
+	<li>Rewrite ASP pages
+<p>SInce I was under Microsoft IIS for so long, I have old ASP pages that will have to be rewritten, probably in PHP. I'll have to evaluate why they had to be ASP (i.e. interpreted/dynamic ) in the first place.</p></li>
+
+	<li>Redirect name servers
+<p>This was the final step in throwing the switch. Once I did this, web surfers could find my new site with the old domain name. I had to add in an HTML file with a redirect to deal with the absence of the blog name:</p>
+<pre class="prettyprint lang-html">&lt;html&gt;
+&lt;head&gt;
+&lt;meta HTTP-EQUIV="REFRESH" 
+content="3; url=http://www.iwebthereforeiam.com/iwebthereforeiam/index.html"&gt;
+&lt;/head&gt;
+&lt;body&gt;&lt;p&gt;Redirecting to &lt;a href="http://www.iwebthereforeiam.com/iwebthereforeiam/index.html"&gt;new blog location&lt;/a&gt; in 3 seconds.&lt;/p&gt;&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</li>
+
+	<li>Alert the search engines
+<p>Because of the addition of the blog name to the middle of the URL, most all URLs in the search engines are now bad. Sigh. So I have to resubmit my site for spidering.</p></li>
+
+</ul>
+
+<br /><hr /><br />
+
+<p>Update 2009-01-09: Unbelievable. The whole problem with the blockquote.quote style in extra.css was that the file began with a C++-style comment and the entire file was interpreted as if it was commented out. Some sort of Unix versus Windows/LF versus CR-LF issue. Totally resolved by taking out the comment.</p>
+
+    </div>
+
+  
+    <ul class="tag_box inline">
+      <li><i class="icon-folder-open"></i></li>
+      
+      
+
+
+  
+     
+    	<li><a href="/categories.html#movable_type-ref">
+    		movable_type <span>11</span>
+    	</a></li>
+    
+  
+
+
+    </ul>
+    
+
+    
+
+    <hr>
+    <div class="pagination">
+      <ul>
+      
+        <li class="prev"><a href="/2009/01/08/how_to_install_movable_type_at_hostmysitecom" title="How to install Movable Type on Linux">&larr; Previous</a></li>
+      
+        <li><a href="/archive.html">Archive</a></li>
+      
+        <li class="next"><a href="/2009/01/09/going_under" title="Going Under">Next &rarr;</a></li>
+      
+      </ul>
+    </div>
+    <hr>
+    
+
+
+  <div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+
+  </div>
+</div>
+
+
+      </div>
+      <hr>
+      <footer>
+        <p>&copy; 2013 Hugh Brown
+          with help from <a href="http://jekyllbootstrap.com" target="_blank" title="The Definitive Jekyll Blogging Framework">Jekyll Bootstrap</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+        </p>
+      </footer>
+
+    </div>
+
+    
+  </body>
+</html>
+
