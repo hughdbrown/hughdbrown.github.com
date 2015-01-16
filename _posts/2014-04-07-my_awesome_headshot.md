@@ -3,4 +3,4 @@ layout: post
 title: My awesome headshot
 date: '2014-04-06 23:59:02 -0600'
 ---
-![My helpful screenshot]({{ site.url }}/assets/images/headshot.png)
+![My awesome headshot]({{ site.url }}/assets/images/headshot.png)
