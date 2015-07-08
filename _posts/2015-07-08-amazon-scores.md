@@ -26,8 +26,8 @@ As you can see, they are all exceptionally strong.
 But I would really prefer if there were a profile option to choose one of several alternative
 scoring algorithms. Here are some alternatives I cam up with:
 
-```python
-m math import exp, log, sqrt
+``` python
+import exp, log, sqrt
 
 def cube(total):
     return total ** 3
@@ -85,7 +85,7 @@ and reducing the gain from low ratings.
 
 If you look at the high-rated products I cited, you don't see much change in score:
 
-```python
+``` python
 import math
 
 # http://www.amazon.com/Miss-Fishers-Murder-Mysteries-2
@@ -138,6 +138,3 @@ Results:
 > 4.61835648708
 
 Products that have higher ratios of 1-star ratings are affected more, as shown here:
-
-
-
