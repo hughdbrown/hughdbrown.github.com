@@ -88,23 +88,18 @@ If you look at the high-rated products I cited, you don't see much change in sco
 ``` python
 import math
 
-# http://www.amazon.com/Miss-Fishers-Murder-Mysteries-2
-miss_fisher_1 = [0.02, 0.02, 0.05, 0.16, 0.75]
-
-# http://www.amazon.com/Miss-Fishers-Murder-Mysteries-2
-miss_fisher_2 = [0.0, 0.0, 0.01, 0.06, 0.93]
-
-# http://www.amazon.com/Prime-Suspect-Collection-Helen-Mirren/dp/B0028AEO0M
-prime_suspect = [0.01, 0.02, 0.04, 0.11, 0.82]
-
-# http://www.amazon.com/Claudius-35th-Anniversary-Sian-Phillips/dp/B006JY3OHW
-i_claudius = [0.02, 0.01, 0.03, 0.06, 0.88]
-
 vectors = {
-    "miss_fisher_1": miss_fisher_1,
-    "miss_fisher_2": miss_fisher_2,
-    "prime_suspect": prime_suspect,
-    "i_claudius": i_claudius,
+    # http://www.amazon.com/Miss-Fishers-Murder-Mysteries-2
+    "miss_fisher_1": [0.02, 0.02, 0.05, 0.16, 0.75],
+
+    # http://www.amazon.com/Miss-Fishers-Murder-Mysteries-2
+    "miss_fisher_2": [0.0, 0.0, 0.01, 0.06, 0.93],
+
+    # http://www.amazon.com/Prime-Suspect-Collection-Helen-Mirren/dp/B0028AEO0M
+    "prime_suspect": [0.01, 0.02, 0.04, 0.11, 0.82],
+
+    # http://www.amazon.com/Claudius-35th-Anniversary-Sian-Phillips/dp/B006JY3OHW
+    "i_claudius": [0.02, 0.01, 0.03, 0.06, 0.88],
 }
 
 def dot_product(arr, scores):
@@ -124,6 +119,7 @@ for name, v in vectors.items():
 
 Results:
 
+```
 > ------------------------------ miss_fisher_1
 > 4.6
 > 4.47129953528
@@ -136,5 +132,30 @@ Results:
 > ------------------------------ prime_suspect
 > 4.71
 > 4.61835648708
+```
 
 Products that have higher ratios of 1-star ratings are affected more, as shown here:
+
+```
+bad = {
+    "jaws_the_revenge": [0.31, 0.10, 0.09, 0.11, 0.39],
+    "inappropriate_comedy": [0.35, 0.1, 0.14, 0.08, 0.35],
+    "staying_alive": [0.10, 0.05, 0.10, 0.11, 0.64],
+}
+
+for name, v in bad.items():
+    print("{0} {1}".format('-' * 30, name))
+    print(amazon_score(v))
+    print(my_score(v))
+```
+
+```
+------------------------------ jaws_the_revenge
+3.17
+2.581480288440958
+------------------------------ inappropriate_comedy
+3.04
+2.453038000783671
+------------------------------ staying_alive
+4.140000000000001
+3.7699103886019767```
