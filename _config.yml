@@ -6,9 +6,12 @@ exclude: [".rvmrc", ".rbenv-version", "README.md", "Rakefile", "changelog.md"]
 auto: true
 highlighter: pygments
 
-# maruku is obsolete: long live maruku!
-# https://help.github.com/articles/migrating-your-pages-site-from-maruku
+# Build settings
 markdown: kramdown
+
+# cayman-blog theme settings
+gems: [jekyll-paginate]
+paginate: 10
 
 # Themes are encouraged to use these universal variables 
 # so be sure to set them if your theme uses them.
